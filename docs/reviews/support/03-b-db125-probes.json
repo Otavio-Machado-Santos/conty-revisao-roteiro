@@ -1,0 +1,1239 @@
+{
+  "reviewed_sha": "db12564279a7ab18d3c7e99759f24c69a6a78227",
+  "cases": [
+    {
+      "deadline": "2024-02-29",
+      "first_expired": "2024-03-01T03:00:00.000Z",
+      "next_deadline": "2024-03-01",
+      "getter_reads_no_saves": 9,
+      "nonmutating_rejections": 12,
+      "preserved_history_events": 5,
+      "restart_approved": true,
+      "final_bytes": {
+        "size": "2717",
+        "inode": "108561262",
+        "mtime_ns": "1791581611137289267",
+        "sha256": "08c72154b2f37d5ceb645e5c47170209339f13ca148787d8343ecbbdaa596ca7"
+      }
+    },
+    {
+      "deadline": "2026-12-31",
+      "first_expired": "2027-01-01T03:00:00.000Z",
+      "next_deadline": "2027-01-01",
+      "getter_reads_no_saves": 9,
+      "nonmutating_rejections": 12,
+      "preserved_history_events": 5,
+      "restart_approved": true,
+      "final_bytes": {
+        "size": "2717",
+        "inode": "108561267",
+        "mtime_ns": "1791581611140338743",
+        "sha256": "591c34d478dde73303d4871c5750f8e3f0fd8c53c75c32db15d5c1b29d114602"
+      }
+    },
+    {
+      "deadline": "2017-10-15",
+      "first_expired": "2017-10-16T02:00:00.000Z",
+      "next_deadline": "2017-10-16",
+      "getter_reads_no_saves": 9,
+      "nonmutating_rejections": 12,
+      "preserved_history_events": 5,
+      "restart_approved": true,
+      "final_bytes": {
+        "size": "2717",
+        "inode": "108561272",
+        "mtime_ns": "1791581611142895932",
+        "sha256": "3e2351b725708b8f286316a727526a12ed1cfdc26fb82809dc211e91f70982b4"
+      }
+    },
+    {
+      "deadline": "2017-02-18",
+      "first_expired": "2017-02-19T03:00:00.000Z",
+      "next_deadline": "2017-02-19",
+      "getter_reads_no_saves": 9,
+      "nonmutating_rejections": 12,
+      "preserved_history_events": 5,
+      "restart_approved": true,
+      "final_bytes": {
+        "size": "2717",
+        "inode": "108561277",
+        "mtime_ns": "1791581611146277364",
+        "sha256": "06e862fab6e3217768ce14cead2a835209abe43b0c13565d9fe5dba84b180d87"
+      }
+    }
+  ],
+  "http": [
+    {
+      "clock": "2026-10-09T22:30:00.000Z",
+      "endpoint": "/scripts",
+      "payload": {
+        "creator_id": "creator",
+        "brand_id": "brand",
+        "content": "HTTP original"
+      },
+      "status": 201,
+      "response": {
+        "id": "http-renewal",
+        "creator_id": "creator",
+        "brand_id": "brand",
+        "time_zone": "America/Sao_Paulo",
+        "state": "awaiting_review",
+        "current_version": 1,
+        "created_at": "2026-10-09T22:30:00.000Z",
+        "updated_at": "2026-10-09T22:30:00.000Z",
+        "approved_at": null,
+        "versions": [
+          {
+            "number": 1,
+            "content": "HTTP original",
+            "state": "awaiting_review",
+            "submitted_at": "2026-10-09T22:30:00.000Z",
+            "change_request": null,
+            "superseded_by": null,
+            "approved_at": null
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "creator",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1
+          }
+        ],
+        "change_request_status": null
+      }
+    },
+    {
+      "clock": "2026-10-09T22:30:00.000Z",
+      "endpoint": "/scripts/http-renewal/change-requests",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 1,
+        "reason": "Primeiro HTTP",
+        "deadline": "2026-10-09"
+      },
+      "status": 200,
+      "response": {
+        "id": "http-renewal",
+        "creator_id": "creator",
+        "brand_id": "brand",
+        "time_zone": "America/Sao_Paulo",
+        "state": "changes_requested",
+        "current_version": 1,
+        "created_at": "2026-10-09T22:30:00.000Z",
+        "updated_at": "2026-10-09T22:30:00.000Z",
+        "approved_at": null,
+        "versions": [
+          {
+            "number": 1,
+            "content": "HTTP original",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T22:30:00.000Z",
+            "change_request": {
+              "reason": "Primeiro HTTP",
+              "deadline": "2026-10-09",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-10T02:59:59.999Z",
+              "expires_at": "2026-10-10T03:00:00.000Z",
+              "requested_at": "2026-10-09T22:30:00.000Z",
+              "requested_by": "brand"
+            },
+            "superseded_by": null,
+            "approved_at": null
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "creator",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1,
+            "reason": "Primeiro HTTP",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          }
+        ],
+        "change_request_status": "active"
+      }
+    },
+    {
+      "clock": "2026-10-10T02:59:59.999Z",
+      "endpoint": "/scripts/http-renewal/change-requests",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 1,
+        "reason": "Renovação HTTP",
+        "deadline": "2026-10-10"
+      },
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "INVALID_STATE",
+          "message": "A marca só pode pedir alterações em uma versão aguardando revisão ou renovar um pedido expirado.",
+          "details": {
+            "current_state": "changes_requested"
+          }
+        }
+      }
+    },
+    {
+      "clock": "2026-10-10T02:59:59.999Z",
+      "endpoint": "/scripts/http-renewal",
+      "status": 200,
+      "response": {
+        "id": "http-renewal",
+        "creator_id": "creator",
+        "brand_id": "brand",
+        "time_zone": "America/Sao_Paulo",
+        "state": "changes_requested",
+        "current_version": 1,
+        "created_at": "2026-10-09T22:30:00.000Z",
+        "updated_at": "2026-10-09T22:30:00.000Z",
+        "approved_at": null,
+        "versions": [
+          {
+            "number": 1,
+            "content": "HTTP original",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T22:30:00.000Z",
+            "change_request": {
+              "reason": "Primeiro HTTP",
+              "deadline": "2026-10-09",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-10T02:59:59.999Z",
+              "expires_at": "2026-10-10T03:00:00.000Z",
+              "requested_at": "2026-10-09T22:30:00.000Z",
+              "requested_by": "brand"
+            },
+            "superseded_by": null,
+            "approved_at": null
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "creator",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1,
+            "reason": "Primeiro HTTP",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          }
+        ],
+        "change_request_status": "active"
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal",
+      "status": 200,
+      "response": {
+        "id": "http-renewal",
+        "creator_id": "creator",
+        "brand_id": "brand",
+        "time_zone": "America/Sao_Paulo",
+        "state": "changes_requested",
+        "current_version": 1,
+        "created_at": "2026-10-09T22:30:00.000Z",
+        "updated_at": "2026-10-09T22:30:00.000Z",
+        "approved_at": null,
+        "versions": [
+          {
+            "number": 1,
+            "content": "HTTP original",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T22:30:00.000Z",
+            "change_request": {
+              "reason": "Primeiro HTTP",
+              "deadline": "2026-10-09",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-10T02:59:59.999Z",
+              "expires_at": "2026-10-10T03:00:00.000Z",
+              "requested_at": "2026-10-09T22:30:00.000Z",
+              "requested_by": "brand"
+            },
+            "superseded_by": null,
+            "approved_at": null
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "creator",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1,
+            "reason": "Primeiro HTTP",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          }
+        ],
+        "change_request_status": "expired"
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/change-requests",
+      "payload": {
+        "brand_id": "intruso",
+        "expected_version": 1,
+        "reason": "Renovação HTTP",
+        "deadline": "2026-10-10"
+      },
+      "status": 403,
+      "response": {
+        "error": {
+          "code": "WRONG_ACTOR",
+          "message": "Somente o identificador da marca deste roteiro pode executar esta ação."
+        }
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal",
+      "status": 200,
+      "response": {
+        "id": "http-renewal",
+        "creator_id": "creator",
+        "brand_id": "brand",
+        "time_zone": "America/Sao_Paulo",
+        "state": "changes_requested",
+        "current_version": 1,
+        "created_at": "2026-10-09T22:30:00.000Z",
+        "updated_at": "2026-10-09T22:30:00.000Z",
+        "approved_at": null,
+        "versions": [
+          {
+            "number": 1,
+            "content": "HTTP original",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T22:30:00.000Z",
+            "change_request": {
+              "reason": "Primeiro HTTP",
+              "deadline": "2026-10-09",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-10T02:59:59.999Z",
+              "expires_at": "2026-10-10T03:00:00.000Z",
+              "requested_at": "2026-10-09T22:30:00.000Z",
+              "requested_by": "brand"
+            },
+            "superseded_by": null,
+            "approved_at": null
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "creator",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1,
+            "reason": "Primeiro HTTP",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          }
+        ],
+        "change_request_status": "expired"
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/change-requests",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 2,
+        "reason": "Renovação HTTP",
+        "deadline": "2026-10-10"
+      },
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "STALE_VERSION",
+          "message": "A ação deve se referir à versão atual.",
+          "details": {
+            "current_version": 1
+          }
+        }
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal",
+      "status": 200,
+      "response": {
+        "id": "http-renewal",
+        "creator_id": "creator",
+        "brand_id": "brand",
+        "time_zone": "America/Sao_Paulo",
+        "state": "changes_requested",
+        "current_version": 1,
+        "created_at": "2026-10-09T22:30:00.000Z",
+        "updated_at": "2026-10-09T22:30:00.000Z",
+        "approved_at": null,
+        "versions": [
+          {
+            "number": 1,
+            "content": "HTTP original",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T22:30:00.000Z",
+            "change_request": {
+              "reason": "Primeiro HTTP",
+              "deadline": "2026-10-09",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-10T02:59:59.999Z",
+              "expires_at": "2026-10-10T03:00:00.000Z",
+              "requested_at": "2026-10-09T22:30:00.000Z",
+              "requested_by": "brand"
+            },
+            "superseded_by": null,
+            "approved_at": null
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "creator",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1,
+            "reason": "Primeiro HTTP",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          }
+        ],
+        "change_request_status": "expired"
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/change-requests",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 1,
+        "reason": "Renovação HTTP",
+        "deadline": "2026-10-09"
+      },
+      "status": 422,
+      "response": {
+        "error": {
+          "code": "DEADLINE_EXPIRED",
+          "message": "O dia do prazo já terminou em America/Sao_Paulo.",
+          "details": {
+            "deadline": "2026-10-09"
+          }
+        }
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal",
+      "status": 200,
+      "response": {
+        "id": "http-renewal",
+        "creator_id": "creator",
+        "brand_id": "brand",
+        "time_zone": "America/Sao_Paulo",
+        "state": "changes_requested",
+        "current_version": 1,
+        "created_at": "2026-10-09T22:30:00.000Z",
+        "updated_at": "2026-10-09T22:30:00.000Z",
+        "approved_at": null,
+        "versions": [
+          {
+            "number": 1,
+            "content": "HTTP original",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T22:30:00.000Z",
+            "change_request": {
+              "reason": "Primeiro HTTP",
+              "deadline": "2026-10-09",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-10T02:59:59.999Z",
+              "expires_at": "2026-10-10T03:00:00.000Z",
+              "requested_at": "2026-10-09T22:30:00.000Z",
+              "requested_by": "brand"
+            },
+            "superseded_by": null,
+            "approved_at": null
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "creator",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1,
+            "reason": "Primeiro HTTP",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          }
+        ],
+        "change_request_status": "expired"
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/change-requests",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 1,
+        "reason": "Renovação HTTP",
+        "deadline": "2026-02-30"
+      },
+      "status": 422,
+      "response": {
+        "error": {
+          "code": "INVALID_INPUT",
+          "message": "deadline deve ser uma data existente.",
+          "details": {
+            "field": "deadline"
+          }
+        }
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal",
+      "status": 200,
+      "response": {
+        "id": "http-renewal",
+        "creator_id": "creator",
+        "brand_id": "brand",
+        "time_zone": "America/Sao_Paulo",
+        "state": "changes_requested",
+        "current_version": 1,
+        "created_at": "2026-10-09T22:30:00.000Z",
+        "updated_at": "2026-10-09T22:30:00.000Z",
+        "approved_at": null,
+        "versions": [
+          {
+            "number": 1,
+            "content": "HTTP original",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T22:30:00.000Z",
+            "change_request": {
+              "reason": "Primeiro HTTP",
+              "deadline": "2026-10-09",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-10T02:59:59.999Z",
+              "expires_at": "2026-10-10T03:00:00.000Z",
+              "requested_at": "2026-10-09T22:30:00.000Z",
+              "requested_by": "brand"
+            },
+            "superseded_by": null,
+            "approved_at": null
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "creator",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1,
+            "reason": "Primeiro HTTP",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          }
+        ],
+        "change_request_status": "expired"
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/change-requests",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 1,
+        "reason": "Concurrent-0",
+        "deadline": "2026-10-10"
+      },
+      "status": 200,
+      "response": {
+        "id": "http-renewal",
+        "creator_id": "creator",
+        "brand_id": "brand",
+        "time_zone": "America/Sao_Paulo",
+        "state": "changes_requested",
+        "current_version": 1,
+        "created_at": "2026-10-09T22:30:00.000Z",
+        "updated_at": "2026-10-10T03:00:00.000Z",
+        "approved_at": null,
+        "versions": [
+          {
+            "number": 1,
+            "content": "HTTP original",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T22:30:00.000Z",
+            "change_request": {
+              "reason": "Concurrent-0",
+              "deadline": "2026-10-10",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-11T02:59:59.999Z",
+              "expires_at": "2026-10-11T03:00:00.000Z",
+              "requested_at": "2026-10-10T03:00:00.000Z",
+              "requested_by": "brand"
+            },
+            "superseded_by": null,
+            "approved_at": null
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "creator",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1,
+            "reason": "Primeiro HTTP",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          },
+          {
+            "sequence": 3,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand",
+            "at": "2026-10-10T03:00:00.000Z",
+            "version": 1,
+            "reason": "Concurrent-0",
+            "deadline": "2026-10-10",
+            "expires_at": "2026-10-11T03:00:00.000Z"
+          }
+        ],
+        "change_request_status": "active"
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/change-requests",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 1,
+        "reason": "Concurrent-1",
+        "deadline": "2026-10-10"
+      },
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "INVALID_STATE",
+          "message": "A marca só pode pedir alterações em uma versão aguardando revisão ou renovar um pedido expirado.",
+          "details": {
+            "current_state": "changes_requested"
+          }
+        }
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/change-requests",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 1,
+        "reason": "Concurrent-2",
+        "deadline": "2026-10-10"
+      },
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "INVALID_STATE",
+          "message": "A marca só pode pedir alterações em uma versão aguardando revisão ou renovar um pedido expirado.",
+          "details": {
+            "current_state": "changes_requested"
+          }
+        }
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/change-requests",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 1,
+        "reason": "Concurrent-3",
+        "deadline": "2026-10-10"
+      },
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "INVALID_STATE",
+          "message": "A marca só pode pedir alterações em uma versão aguardando revisão ou renovar um pedido expirado.",
+          "details": {
+            "current_state": "changes_requested"
+          }
+        }
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/change-requests",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 1,
+        "reason": "Concurrent-4",
+        "deadline": "2026-10-10"
+      },
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "INVALID_STATE",
+          "message": "A marca só pode pedir alterações em uma versão aguardando revisão ou renovar um pedido expirado.",
+          "details": {
+            "current_state": "changes_requested"
+          }
+        }
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/change-requests",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 1,
+        "reason": "Concurrent-5",
+        "deadline": "2026-10-10"
+      },
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "INVALID_STATE",
+          "message": "A marca só pode pedir alterações em uma versão aguardando revisão ou renovar um pedido expirado.",
+          "details": {
+            "current_state": "changes_requested"
+          }
+        }
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/change-requests",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 1,
+        "reason": "Concurrent-6",
+        "deadline": "2026-10-10"
+      },
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "INVALID_STATE",
+          "message": "A marca só pode pedir alterações em uma versão aguardando revisão ou renovar um pedido expirado.",
+          "details": {
+            "current_state": "changes_requested"
+          }
+        }
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/change-requests",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 1,
+        "reason": "Concurrent-7",
+        "deadline": "2026-10-10"
+      },
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "INVALID_STATE",
+          "message": "A marca só pode pedir alterações em uma versão aguardando revisão ou renovar um pedido expirado.",
+          "details": {
+            "current_state": "changes_requested"
+          }
+        }
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/change-requests",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 1,
+        "reason": "Concurrent-8",
+        "deadline": "2026-10-10"
+      },
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "INVALID_STATE",
+          "message": "A marca só pode pedir alterações em uma versão aguardando revisão ou renovar um pedido expirado.",
+          "details": {
+            "current_state": "changes_requested"
+          }
+        }
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/change-requests",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 1,
+        "reason": "Concurrent-9",
+        "deadline": "2026-10-10"
+      },
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "INVALID_STATE",
+          "message": "A marca só pode pedir alterações em uma versão aguardando revisão ou renovar um pedido expirado.",
+          "details": {
+            "current_state": "changes_requested"
+          }
+        }
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/change-requests",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 1,
+        "reason": "Concurrent-10",
+        "deadline": "2026-10-10"
+      },
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "INVALID_STATE",
+          "message": "A marca só pode pedir alterações em uma versão aguardando revisão ou renovar um pedido expirado.",
+          "details": {
+            "current_state": "changes_requested"
+          }
+        }
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/change-requests",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 1,
+        "reason": "Concurrent-11",
+        "deadline": "2026-10-10"
+      },
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "INVALID_STATE",
+          "message": "A marca só pode pedir alterações em uma versão aguardando revisão ou renovar um pedido expirado.",
+          "details": {
+            "current_state": "changes_requested"
+          }
+        }
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal",
+      "status": 200,
+      "response": {
+        "id": "http-renewal",
+        "creator_id": "creator",
+        "brand_id": "brand",
+        "time_zone": "America/Sao_Paulo",
+        "state": "changes_requested",
+        "current_version": 1,
+        "created_at": "2026-10-09T22:30:00.000Z",
+        "updated_at": "2026-10-10T03:00:00.000Z",
+        "approved_at": null,
+        "versions": [
+          {
+            "number": 1,
+            "content": "HTTP original",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T22:30:00.000Z",
+            "change_request": {
+              "reason": "Concurrent-0",
+              "deadline": "2026-10-10",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-11T02:59:59.999Z",
+              "expires_at": "2026-10-11T03:00:00.000Z",
+              "requested_at": "2026-10-10T03:00:00.000Z",
+              "requested_by": "brand"
+            },
+            "superseded_by": null,
+            "approved_at": null
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "creator",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1,
+            "reason": "Primeiro HTTP",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          },
+          {
+            "sequence": 3,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand",
+            "at": "2026-10-10T03:00:00.000Z",
+            "version": 1,
+            "reason": "Concurrent-0",
+            "deadline": "2026-10-10",
+            "expires_at": "2026-10-11T03:00:00.000Z"
+          }
+        ],
+        "change_request_status": "active"
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/versions",
+      "payload": {
+        "creator_id": "creator",
+        "expected_version": 1,
+        "content": "HTTP revisado"
+      },
+      "status": 201,
+      "response": {
+        "id": "http-renewal",
+        "creator_id": "creator",
+        "brand_id": "brand",
+        "time_zone": "America/Sao_Paulo",
+        "state": "awaiting_review",
+        "current_version": 2,
+        "created_at": "2026-10-09T22:30:00.000Z",
+        "updated_at": "2026-10-10T03:00:00.000Z",
+        "approved_at": null,
+        "versions": [
+          {
+            "number": 1,
+            "content": "HTTP original",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T22:30:00.000Z",
+            "change_request": {
+              "reason": "Concurrent-0",
+              "deadline": "2026-10-10",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-11T02:59:59.999Z",
+              "expires_at": "2026-10-11T03:00:00.000Z",
+              "requested_at": "2026-10-10T03:00:00.000Z",
+              "requested_by": "brand"
+            },
+            "superseded_by": 2,
+            "approved_at": null
+          },
+          {
+            "number": 2,
+            "content": "HTTP revisado",
+            "state": "awaiting_review",
+            "submitted_at": "2026-10-10T03:00:00.000Z",
+            "change_request": null,
+            "superseded_by": null,
+            "approved_at": null
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "creator",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1,
+            "reason": "Primeiro HTTP",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          },
+          {
+            "sequence": 3,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand",
+            "at": "2026-10-10T03:00:00.000Z",
+            "version": 1,
+            "reason": "Concurrent-0",
+            "deadline": "2026-10-10",
+            "expires_at": "2026-10-11T03:00:00.000Z"
+          },
+          {
+            "sequence": 4,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "creator",
+            "at": "2026-10-10T03:00:00.000Z",
+            "version": 2,
+            "replaces_version": 1
+          }
+        ],
+        "change_request_status": null
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/approval",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 1
+      },
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "STALE_VERSION",
+          "message": "A ação deve se referir à versão atual.",
+          "details": {
+            "current_version": 2
+          }
+        }
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/approval",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 2
+      },
+      "status": 200,
+      "response": {
+        "id": "http-renewal",
+        "creator_id": "creator",
+        "brand_id": "brand",
+        "time_zone": "America/Sao_Paulo",
+        "state": "approved",
+        "current_version": 2,
+        "created_at": "2026-10-09T22:30:00.000Z",
+        "updated_at": "2026-10-10T03:00:00.000Z",
+        "approved_at": "2026-10-10T03:00:00.000Z",
+        "versions": [
+          {
+            "number": 1,
+            "content": "HTTP original",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T22:30:00.000Z",
+            "change_request": {
+              "reason": "Concurrent-0",
+              "deadline": "2026-10-10",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-11T02:59:59.999Z",
+              "expires_at": "2026-10-11T03:00:00.000Z",
+              "requested_at": "2026-10-10T03:00:00.000Z",
+              "requested_by": "brand"
+            },
+            "superseded_by": 2,
+            "approved_at": null
+          },
+          {
+            "number": 2,
+            "content": "HTTP revisado",
+            "state": "approved",
+            "submitted_at": "2026-10-10T03:00:00.000Z",
+            "change_request": null,
+            "superseded_by": null,
+            "approved_at": "2026-10-10T03:00:00.000Z"
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "creator",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand",
+            "at": "2026-10-09T22:30:00.000Z",
+            "version": 1,
+            "reason": "Primeiro HTTP",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          },
+          {
+            "sequence": 3,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand",
+            "at": "2026-10-10T03:00:00.000Z",
+            "version": 1,
+            "reason": "Concurrent-0",
+            "deadline": "2026-10-10",
+            "expires_at": "2026-10-11T03:00:00.000Z"
+          },
+          {
+            "sequence": 4,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "creator",
+            "at": "2026-10-10T03:00:00.000Z",
+            "version": 2,
+            "replaces_version": 1
+          },
+          {
+            "sequence": 5,
+            "type": "approved",
+            "actor_role": "brand",
+            "actor_id": "brand",
+            "at": "2026-10-10T03:00:00.000Z",
+            "version": 2
+          }
+        ],
+        "change_request_status": null
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/change-requests",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 2,
+        "reason": "Renovação HTTP",
+        "deadline": "2026-10-10"
+      },
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "REVIEW_CLOSED",
+          "message": "A revisão foi aprovada e não pode ser reaberta."
+        }
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/versions",
+      "payload": {
+        "creator_id": "creator",
+        "expected_version": 2,
+        "content": "Fechado"
+      },
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "REVIEW_CLOSED",
+          "message": "A revisão foi aprovada e não pode ser reaberta."
+        }
+      }
+    },
+    {
+      "clock": "2026-10-10T03:00:00.000Z",
+      "endpoint": "/scripts/http-renewal/approval",
+      "payload": {
+        "brand_id": "brand",
+        "expected_version": 2
+      },
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "REVIEW_CLOSED",
+          "message": "A revisão foi aprovada e não pode ser reaberta."
+        }
+      }
+    }
+  ],
+  "failures": [],
+  "concurrent_renewal": {
+    "attempted": 12,
+    "successful": 1,
+    "invalid_state": 11,
+    "versions": 1,
+    "history_events": 3
+  },
+  "http_restart_approved": true,
+  "checks_passed": true
+}

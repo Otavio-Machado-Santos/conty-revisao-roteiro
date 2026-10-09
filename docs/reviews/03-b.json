@@ -34,19 +34,19 @@
       "command": "npm test com Node22 no archive isolado db125642",
       "exit_code": 0,
       "result": "33 testes passaram; nenhuma falha. Não houve repetição ampla por rotina.",
-      "evidence": "revisoes/03-b-db125-tests-summary.txt"
+      "evidence": "revisoes/support/03-b-db125-tests-summary.txt"
     },
     {
-      "command": "node revisoes/probes/03-b-db125.mjs <archive db125642> revisoes/03-b-db125-probes.json",
+      "command": "node revisoes/support/03-b-db125.mjs <archive db125642> revisoes/support/03-b-db125-probes.json",
       "exit_code": 0,
       "result": "4 fronteiras literais de calendário SP, 48 rejeições sem mutação de memória/arquivo, 32 requests HTTP reais, 12 renovações concorrentes com um único sucesso; reload terminal aprovado.",
-      "evidence": "revisoes/03-b-db125-probes.json"
+      "evidence": "revisoes/support/03-b-db125-probes.json"
     },
     {
       "command": "git show/hash dos arquivos entre f7212f0, c5301a8 e db125642; node --check dos 3 arquivos JS alterados",
       "exit_code": 0,
       "result": "11 arquivos imutáveis byte a byte idênticos; src/review.js original f721=c530; helpers gerais de input/ator/expected_version/editable literalmente inalterados. Sintaxe dos 3 arquivos alterados passou.",
-      "evidence": "revisoes/03-b-db125-source-integrity.json"
+      "evidence": "revisoes/support/03-b-db125-source-integrity.json"
     }
   ],
   "own_probes": [

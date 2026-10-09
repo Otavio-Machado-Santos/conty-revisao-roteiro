@@ -1,0 +1,13 @@
+Resumo do TAP real capturado por exec_command no git archive isolado de db12564279a7ab18d3c7e99759f24c69a6a78227.
+Comando: npm test, Node.js v22.23.3 no PATH.
+Esta é a cauda da execução, não a saída integral nem uma nova execução.
+
+1..33
+# tests 33
+# suites 0
+# pass 33
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 187.166
