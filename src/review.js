@@ -42,6 +42,18 @@ function requireState(script, state, message) {
   if (script.state !== state) throw new DomainError('INVALID_STATE', message, 409, { current_state: script.state });
 }
 
+function storedScript(store, id) {
+  const script = store.get(id);
+  if (!script) throw new DomainError('SCRIPT_NOT_FOUND', 'Roteiro não encontrado.', 404);
+  return script;
+}
+
+function present(script, now) {
+  return { ...script, change_request_status: script.state === 'changes_requested'
+    ? (isDeadlineExpired(script.versions.at(-1).change_request, now) ? 'expired' : 'active')
+    : null };
+}
+
 function version(number, content, timestamp) {
   return { number, content, state: 'awaiting_review', submitted_at: timestamp, change_request: null, superseded_by: null, approved_at: null };
 }
@@ -65,9 +77,7 @@ export class ReviewService {
   }
 
   get(id) {
-    const script = this.store.get(id);
-    if (!script) throw new DomainError('SCRIPT_NOT_FOUND', 'Roteiro não encontrado.', 404);
-    return script;
+    return present(storedScript(this.store, id), this.now());
   }
 
   create(input) {
@@ -75,38 +85,40 @@ export class ReviewService {
     const creatorId = text(input.creator_id, 'creator_id', 100);
     const brandId = text(input.brand_id, 'brand_id', 100);
     const content = text(input.content, 'content', 20_000, { preserve: true });
-    const timestamp = this.now().toISOString();
+    const now = this.now();
+    const timestamp = now.toISOString();
     const script = {
       id: this.idFactory(), creator_id: creatorId, brand_id: brandId, time_zone: BRAND_TIME_ZONE,
       state: 'awaiting_review', current_version: 1, created_at: timestamp, updated_at: timestamp, approved_at: null,
       versions: [version(1, content, timestamp)], history: [],
     };
     record(script, 'version_submitted', 'creator', creatorId, timestamp);
-    return this.store.save(script);
+    return present(this.store.save(script), now);
   }
 
   requestChanges(id, input) {
     inputObject(input, ['brand_id', 'expected_version', 'reason', 'deadline']);
-    const script = this.get(id);
+    const script = storedScript(this.store, id);
     editable(script);
     const actorId = actor(input, 'brand', script);
     expectedVersion(input, script);
-    requireState(script, 'awaiting_review', 'A marca só pode pedir alterações em uma versão aguardando revisão.');
+    const now = this.now();
+    const current = script.versions.at(-1);
+    const renewingExpiredRequest = script.state === 'changes_requested' && isDeadlineExpired(current.change_request, now);
+    if (!renewingExpiredRequest) requireState(script, 'awaiting_review', 'A marca só pode pedir alterações em uma versão aguardando revisão ou renovar um pedido expirado.');
     const reason = text(input.reason, 'reason', 2_000);
     const boundary = deadlineBoundary(input.deadline);
-    const now = this.now();
     if (isDeadlineExpired(boundary, now)) throw new DomainError('DEADLINE_EXPIRED', 'O dia do prazo já terminou em America/Sao_Paulo.', 422, { deadline: input.deadline });
     const timestamp = now.toISOString();
-    const current = script.versions.at(-1);
     current.state = script.state = 'changes_requested';
     current.change_request = { reason, ...boundary, requested_at: timestamp, requested_by: actorId };
     record(script, 'changes_requested', 'brand', actorId, timestamp, { reason, deadline: boundary.deadline, expires_at: boundary.expires_at });
-    return this.store.save(script);
+    return present(this.store.save(script), now);
   }
 
   submitVersion(id, input) {
     inputObject(input, ['creator_id', 'expected_version', 'content']);
-    const script = this.get(id);
+    const script = storedScript(this.store, id);
     editable(script);
     const actorId = actor(input, 'creator', script);
     expectedVersion(input, script);
@@ -124,23 +136,24 @@ export class ReviewService {
     script.current_version = number;
     script.state = 'awaiting_review';
     record(script, 'version_submitted', 'creator', actorId, timestamp, { replaces_version: number - 1 });
-    return this.store.save(script);
+    return present(this.store.save(script), now);
   }
 
   approve(id, input) {
     inputObject(input, ['brand_id', 'expected_version']);
-    const script = this.get(id);
+    const script = storedScript(this.store, id);
     editable(script);
     const actorId = actor(input, 'brand', script);
     expectedVersion(input, script);
     requireState(script, 'awaiting_review', 'A marca só pode aprovar uma versão aguardando revisão.');
-    const timestamp = this.now().toISOString();
+    const now = this.now();
+    const timestamp = now.toISOString();
     script.state = 'approved';
     script.approved_at = timestamp;
     const current = script.versions.at(-1);
     current.state = 'approved';
     current.approved_at = timestamp;
     record(script, 'approved', 'brand', actorId, timestamp);
-    return this.store.save(script);
+    return present(this.store.save(script), now);
   }
 }

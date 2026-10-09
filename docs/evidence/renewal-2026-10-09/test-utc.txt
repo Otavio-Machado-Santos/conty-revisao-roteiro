@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: pedido expirado permite novo pedido válido, reenvio e aprovação no mesmo roteiro
+ok 1 - pedido expirado permite novo pedido válido, reenvio e aprovação no mesmo roteiro
+  ---
+  duration_ms: 1.13775
+  type: 'test'
+  ...
+# Subtest: renovação de 2026-03-13: último ms bloqueia, primeiro ms permite, sem apagar pedido anterior
+ok 2 - renovação de 2026-03-13: último ms bloqueia, primeiro ms permite, sem apagar pedido anterior
+  ---
+  duration_ms: 1.023958
+  type: 'test'
+  ...
+# Subtest: renovação de 2018-11-04: último ms bloqueia, primeiro ms permite, sem apagar pedido anterior
+ok 3 - renovação de 2018-11-04: último ms bloqueia, primeiro ms permite, sem apagar pedido anterior
+  ---
+  duration_ms: 0.666834
+  type: 'test'
+  ...
+# Subtest: renovação de 2019-02-16: último ms bloqueia, primeiro ms permite, sem apagar pedido anterior
+ok 4 - renovação de 2019-02-16: último ms bloqueia, primeiro ms permite, sem apagar pedido anterior
+  ---
+  duration_ms: 0.851291
+  type: 'test'
+  ...
+# Subtest: renovação inválida não altera estado, pedido, histórico ou arquivo
+ok 5 - renovação inválida não altera estado, pedido, histórico ou arquivo
+  ---
+  duration_ms: 2.64325
+  type: 'test'
+  ...
+# Subtest: renovações sucessivas conservam motivos, prazos, autores e datas até aprovação terminal
+ok 6 - renovações sucessivas conservam motivos, prazos, autores e datas até aprovação terminal
+  ---
+  duration_ms: 0.865083
+  type: 'test'
+  ...
+# Subtest: GET projeta expiração pelo relógio sem persistir status, mutar histórico ou exigir migração
+ok 7 - GET projeta expiração pelo relógio sem persistir status, mutar histórico ou exigir migração
+  ---
+  duration_ms: 1.671417
+  type: 'test'
+  ...
+# Subtest: falha ao persistir renovação conserva o pedido expirado e o arquivo anterior
+ok 8 - falha ao persistir renovação conserva o pedido expirado e o arquivo anterior
+  ---
+  duration_ms: 1.926834
+  type: 'test'
+  ...
+# Subtest: HTTP mostra expiração, rejeita escritas inválidas sem efeitos e retoma até aprovação
+ok 9 - HTTP mostra expiração, rejeita escritas inválidas sem efeitos e retoma até aprovação
+  ---
+  duration_ms: 41.269667
+  type: 'test'
+  ...
+# Subtest: HTTP serializa duas renovações concorrentes: somente a primeira substitui o pedido expirado
+ok 10 - HTTP serializa duas renovações concorrentes: somente a primeira substitui o pedido expirado
+  ---
+  duration_ms: 9.263
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 128.45825

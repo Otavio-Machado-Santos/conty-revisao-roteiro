@@ -1,0 +1,16 @@
+TAP version 13
+# Subtest: pedido expirado permite novo pedido válido, reenvio e aprovação no mesmo roteiro
+ok 1 - pedido expirado permite novo pedido válido, reenvio e aprovação no mesmo roteiro
+  ---
+  duration_ms: 1.391833
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 63.135209

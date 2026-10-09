@@ -1,0 +1,5 @@
+Node.js v22.23.3
+node --check src/review.js: exit 0
+node --check test/renewal.test.js: exit 0
+git diff --check: exit 0
+README.md e docs/renovacao-pedido-expirado.md: todos os links locais existem

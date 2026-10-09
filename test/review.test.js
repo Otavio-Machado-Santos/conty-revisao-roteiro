@@ -59,7 +59,7 @@ test('primeiro instante do dia seguinte rejeita reenvio, conservando pedido e ve
   const requested = service.requestChanges(initial.id, change);
   setClock('2026-03-14T03:00:00.000Z');
   assert.throws(() => service.submitVersion(initial.id, newVersion), error('DEADLINE_EXPIRED', 409));
-  assert.deepEqual(service.get(initial.id), requested);
+  assert.deepEqual(service.get(initial.id), { ...requested, change_request_status: 'expired' });
 });
 
 test('pedido exige motivo e prazo válidos e não aceita prazo passado', () => {
