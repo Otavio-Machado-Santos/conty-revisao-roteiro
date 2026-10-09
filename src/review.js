@@ -8,7 +8,7 @@ function inputObject(input, allowed) {
     throw new DomainError('INVALID_INPUT', 'O corpo deve ser um objeto JSON.');
   }
   const extra = Object.keys(input).find((field) => !allowed.includes(field));
-  if (extra) throw new DomainError('INVALID_INPUT', `Campo desconhecido: ${extra}.`, 422, { field: extra });
+  if (extra !== undefined) throw new DomainError('INVALID_INPUT', `Campo desconhecido: ${extra}.`, 422, { field: extra });
 }
 
 function text(value, field, maximum, { preserve = false } = {}) {

@@ -100,5 +100,8 @@ test('HTTP rejeita JSON inválido, tipo incorreto, corpo grande e métodos incom
     assert.equal((await call('/scripts', {}, { headers: { 'content-type': 'text/plain' }, body: '{}' })).status, 415);
     assert.equal((await call('/scripts', { content: 'x'.repeat(70_000) })).status, 413);
     assert.equal((await call('/scripts', [])).status, 422);
+    const unknownEmptyField = await call('/scripts', { creator_id: 'c', brand_id: 'b', content: 'Roteiro válido', '': true });
+    assert.equal(unknownEmptyField.status, 422);
+    assert.equal(unknownEmptyField.data.error.details.field, '');
   });
 });

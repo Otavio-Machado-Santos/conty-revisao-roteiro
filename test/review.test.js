@@ -153,3 +153,18 @@ test('falha ao persistir uma mudança não modifica o agregado anterior', () => 
   assert.throws(() => service.requestChanges(initial.id, change), /disco indisponível/);
   assert.deepEqual(service.get(initial.id), initial);
 });
+
+test('campo desconhecido vazio é rejeitado em todas as escritas, sem efeitos parciais', () => {
+  const { service, initial } = fixture();
+  const invalid = (input) => ({ ...input, '': true });
+  const emptyField = (value) => value.code === 'INVALID_INPUT' && value.status === 422 && value.details.field === '';
+  assert.throws(() => service.create(invalid({ creator_id: 'creator-1', brand_id: 'brand-1', content: 'Outro roteiro' })), emptyField);
+  assert.throws(() => service.requestChanges(initial.id, invalid(change)), emptyField);
+  assert.deepEqual(service.get(initial.id), initial);
+  const requested = service.requestChanges(initial.id, change);
+  assert.throws(() => service.submitVersion(initial.id, invalid(newVersion)), emptyField);
+  assert.deepEqual(service.get(initial.id), requested);
+  const submitted = service.submitVersion(initial.id, newVersion);
+  assert.throws(() => service.approve(initial.id, invalid({ brand_id: 'brand-1', expected_version: 2 })), emptyField);
+  assert.deepEqual(service.get(initial.id), submitted);
+});
