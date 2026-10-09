@@ -1,0 +1,13 @@
+{
+  "name": "conty-revisao-roteiro",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "API de revisão de roteiro com versões, prazo civil e histórico",
+  "engines": { "node": ">=22 <23" },
+  "scripts": {
+    "start": "node src/start.js",
+    "test": "node --test",
+    "demo": "node scripts/demo.js"
+  }
+}

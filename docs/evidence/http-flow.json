@@ -1,0 +1,374 @@
+{
+  "captured_at": "2026-10-09T19:03:08.318Z",
+  "origin": "http://127.0.0.1:3003",
+  "synthetic_data": true,
+  "steps": [
+    {
+      "method": "POST",
+      "path": "/scripts",
+      "request": {
+        "creator_id": "criador-demo",
+        "brand_id": "marca-demo",
+        "content": "Apresentação do produto sem explicar o benefício."
+      },
+      "status": 201,
+      "response": {
+        "id": "9e33c765-320e-41b3-b3d3-ccec6f9b2bc8",
+        "creator_id": "criador-demo",
+        "brand_id": "marca-demo",
+        "time_zone": "America/Sao_Paulo",
+        "state": "awaiting_review",
+        "current_version": 1,
+        "created_at": "2026-10-09T19:03:08.338Z",
+        "updated_at": "2026-10-09T19:03:08.338Z",
+        "approved_at": null,
+        "versions": [
+          {
+            "number": 1,
+            "content": "Apresentação do produto sem explicar o benefício.",
+            "state": "awaiting_review",
+            "submitted_at": "2026-10-09T19:03:08.338Z",
+            "change_request": null,
+            "superseded_by": null,
+            "approved_at": null
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "criador-demo",
+            "at": "2026-10-09T19:03:08.338Z",
+            "version": 1
+          }
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/scripts/9e33c765-320e-41b3-b3d3-ccec6f9b2bc8/change-requests",
+      "request": {
+        "brand_id": "marca-demo",
+        "expected_version": 1,
+        "reason": "Explique o benefício antes da chamada de compra.",
+        "deadline": "2026-10-09"
+      },
+      "status": 200,
+      "response": {
+        "id": "9e33c765-320e-41b3-b3d3-ccec6f9b2bc8",
+        "creator_id": "criador-demo",
+        "brand_id": "marca-demo",
+        "time_zone": "America/Sao_Paulo",
+        "state": "changes_requested",
+        "current_version": 1,
+        "created_at": "2026-10-09T19:03:08.338Z",
+        "updated_at": "2026-10-09T19:03:08.345Z",
+        "approved_at": null,
+        "versions": [
+          {
+            "number": 1,
+            "content": "Apresentação do produto sem explicar o benefício.",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T19:03:08.338Z",
+            "change_request": {
+              "reason": "Explique o benefício antes da chamada de compra.",
+              "deadline": "2026-10-09",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-10T02:59:59.999Z",
+              "expires_at": "2026-10-10T03:00:00.000Z",
+              "requested_at": "2026-10-09T19:03:08.345Z",
+              "requested_by": "marca-demo"
+            },
+            "superseded_by": null,
+            "approved_at": null
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "criador-demo",
+            "at": "2026-10-09T19:03:08.338Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "marca-demo",
+            "at": "2026-10-09T19:03:08.345Z",
+            "version": 1,
+            "reason": "Explique o benefício antes da chamada de compra.",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          }
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/scripts/9e33c765-320e-41b3-b3d3-ccec6f9b2bc8/versions",
+      "request": {
+        "creator_id": "criador-demo",
+        "expected_version": 1,
+        "content": "O produto reduz o trabalho manual. Veja como usar e onde comprar."
+      },
+      "status": 201,
+      "response": {
+        "id": "9e33c765-320e-41b3-b3d3-ccec6f9b2bc8",
+        "creator_id": "criador-demo",
+        "brand_id": "marca-demo",
+        "time_zone": "America/Sao_Paulo",
+        "state": "awaiting_review",
+        "current_version": 2,
+        "created_at": "2026-10-09T19:03:08.338Z",
+        "updated_at": "2026-10-09T19:03:08.347Z",
+        "approved_at": null,
+        "versions": [
+          {
+            "number": 1,
+            "content": "Apresentação do produto sem explicar o benefício.",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T19:03:08.338Z",
+            "change_request": {
+              "reason": "Explique o benefício antes da chamada de compra.",
+              "deadline": "2026-10-09",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-10T02:59:59.999Z",
+              "expires_at": "2026-10-10T03:00:00.000Z",
+              "requested_at": "2026-10-09T19:03:08.345Z",
+              "requested_by": "marca-demo"
+            },
+            "superseded_by": 2,
+            "approved_at": null
+          },
+          {
+            "number": 2,
+            "content": "O produto reduz o trabalho manual. Veja como usar e onde comprar.",
+            "state": "awaiting_review",
+            "submitted_at": "2026-10-09T19:03:08.347Z",
+            "change_request": null,
+            "superseded_by": null,
+            "approved_at": null
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "criador-demo",
+            "at": "2026-10-09T19:03:08.338Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "marca-demo",
+            "at": "2026-10-09T19:03:08.345Z",
+            "version": 1,
+            "reason": "Explique o benefício antes da chamada de compra.",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          },
+          {
+            "sequence": 3,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "criador-demo",
+            "at": "2026-10-09T19:03:08.347Z",
+            "version": 2,
+            "replaces_version": 1
+          }
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/scripts/9e33c765-320e-41b3-b3d3-ccec6f9b2bc8/approval",
+      "request": {
+        "brand_id": "marca-demo",
+        "expected_version": 2
+      },
+      "status": 200,
+      "response": {
+        "id": "9e33c765-320e-41b3-b3d3-ccec6f9b2bc8",
+        "creator_id": "criador-demo",
+        "brand_id": "marca-demo",
+        "time_zone": "America/Sao_Paulo",
+        "state": "approved",
+        "current_version": 2,
+        "created_at": "2026-10-09T19:03:08.338Z",
+        "updated_at": "2026-10-09T19:03:08.350Z",
+        "approved_at": "2026-10-09T19:03:08.350Z",
+        "versions": [
+          {
+            "number": 1,
+            "content": "Apresentação do produto sem explicar o benefício.",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T19:03:08.338Z",
+            "change_request": {
+              "reason": "Explique o benefício antes da chamada de compra.",
+              "deadline": "2026-10-09",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-10T02:59:59.999Z",
+              "expires_at": "2026-10-10T03:00:00.000Z",
+              "requested_at": "2026-10-09T19:03:08.345Z",
+              "requested_by": "marca-demo"
+            },
+            "superseded_by": 2,
+            "approved_at": null
+          },
+          {
+            "number": 2,
+            "content": "O produto reduz o trabalho manual. Veja como usar e onde comprar.",
+            "state": "approved",
+            "submitted_at": "2026-10-09T19:03:08.347Z",
+            "change_request": null,
+            "superseded_by": null,
+            "approved_at": "2026-10-09T19:03:08.350Z"
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "criador-demo",
+            "at": "2026-10-09T19:03:08.338Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "marca-demo",
+            "at": "2026-10-09T19:03:08.345Z",
+            "version": 1,
+            "reason": "Explique o benefício antes da chamada de compra.",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          },
+          {
+            "sequence": 3,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "criador-demo",
+            "at": "2026-10-09T19:03:08.347Z",
+            "version": 2,
+            "replaces_version": 1
+          },
+          {
+            "sequence": 4,
+            "type": "approved",
+            "actor_role": "brand",
+            "actor_id": "marca-demo",
+            "at": "2026-10-09T19:03:08.350Z",
+            "version": 2
+          }
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/scripts/9e33c765-320e-41b3-b3d3-ccec6f9b2bc8/versions",
+      "request": {
+        "creator_id": "criador-demo",
+        "expected_version": 2,
+        "content": "Tentativa após aprovação."
+      },
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "REVIEW_CLOSED",
+          "message": "A revisão foi aprovada e não pode ser reaberta."
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/scripts/9e33c765-320e-41b3-b3d3-ccec6f9b2bc8",
+      "status": 200,
+      "response": {
+        "id": "9e33c765-320e-41b3-b3d3-ccec6f9b2bc8",
+        "creator_id": "criador-demo",
+        "brand_id": "marca-demo",
+        "time_zone": "America/Sao_Paulo",
+        "state": "approved",
+        "current_version": 2,
+        "created_at": "2026-10-09T19:03:08.338Z",
+        "updated_at": "2026-10-09T19:03:08.350Z",
+        "approved_at": "2026-10-09T19:03:08.350Z",
+        "versions": [
+          {
+            "number": 1,
+            "content": "Apresentação do produto sem explicar o benefício.",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T19:03:08.338Z",
+            "change_request": {
+              "reason": "Explique o benefício antes da chamada de compra.",
+              "deadline": "2026-10-09",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-10T02:59:59.999Z",
+              "expires_at": "2026-10-10T03:00:00.000Z",
+              "requested_at": "2026-10-09T19:03:08.345Z",
+              "requested_by": "marca-demo"
+            },
+            "superseded_by": 2,
+            "approved_at": null
+          },
+          {
+            "number": 2,
+            "content": "O produto reduz o trabalho manual. Veja como usar e onde comprar.",
+            "state": "approved",
+            "submitted_at": "2026-10-09T19:03:08.347Z",
+            "change_request": null,
+            "superseded_by": null,
+            "approved_at": "2026-10-09T19:03:08.350Z"
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "criador-demo",
+            "at": "2026-10-09T19:03:08.338Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "marca-demo",
+            "at": "2026-10-09T19:03:08.345Z",
+            "version": 1,
+            "reason": "Explique o benefício antes da chamada de compra.",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          },
+          {
+            "sequence": 3,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "criador-demo",
+            "at": "2026-10-09T19:03:08.347Z",
+            "version": 2,
+            "replaces_version": 1
+          },
+          {
+            "sequence": 4,
+            "type": "approved",
+            "actor_role": "brand",
+            "actor_id": "marca-demo",
+            "at": "2026-10-09T19:03:08.350Z",
+            "version": 2
+          }
+        ]
+      }
+    }
+  ]
+}

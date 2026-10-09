@@ -1,0 +1,146 @@
+
+> conty-revisao-roteiro@1.0.0 test
+> node --test
+
+TAP version 13
+# Subtest: prazo civil de São Paulo inclui o último milissegundo apesar do dia UTC já ter virado
+ok 1 - prazo civil de São Paulo inclui o último milissegundo apesar do dia UTC já ter virado
+  ---
+  duration_ms: 1.783583
+  type: 'test'
+  ...
+# Subtest: calendário trata ano bissexto e virada de ano
+ok 2 - calendário trata ano bissexto e virada de ano
+  ---
+  duration_ms: 1.072875
+  type: 'test'
+  ...
+# Subtest: não fixa UTC-03: início e fim históricos do horário de verão mantêm o dia completo
+ok 3 - não fixa UTC-03: início e fim históricos do horário de verão mantêm o dia completo
+  ---
+  duration_ms: 0.2895
+  type: 'test'
+  ...
+# Subtest: rejeita datas impossíveis, formatos permissivos, objetos e prazo ausente
+ok 4 - rejeita datas impossíveis, formatos permissivos, objetos e prazo ausente
+  ---
+  duration_ms: 0.695042
+  type: 'test'
+  ...
+# Subtest: HTTP executa criação → alteração → nova versão → aprovação, e rejeita reabertura
+ok 5 - HTTP executa criação → alteração → nova versão → aprovação, e rejeita reabertura
+  ---
+  duration_ms: 30.846667
+  type: 'test'
+  ...
+# Subtest: HTTP comprova limite de prazo com relógio injetado e erros auditáveis
+ok 6 - HTTP comprova limite de prazo com relógio injetado e erros auditáveis
+  ---
+  duration_ms: 12.619625
+  type: 'test'
+  ...
+# Subtest: HTTP valida motivo, prazo, estado, ator e versão atual
+ok 7 - HTTP valida motivo, prazo, estado, ator e versão atual
+  ---
+  duration_ms: 9.953583
+  type: 'test'
+  ...
+# Subtest: HTTP rejeita JSON inválido, tipo incorreto, corpo grande e métodos incompatíveis
+ok 8 - HTTP rejeita JSON inválido, tipo incorreto, corpo grande e métodos incompatíveis
+  ---
+  duration_ms: 10.062875
+  type: 'test'
+  ...
+# Subtest: fluxo completo preserva versões, pedido, autores e histórico sequencial
+ok 9 - fluxo completo preserva versões, pedido, autores e histórico sequencial
+  ---
+  duration_ms: 2.46475
+  type: 'test'
+  ...
+# Subtest: último instante do dia em São Paulo aceita pedido e reenvio
+ok 10 - último instante do dia em São Paulo aceita pedido e reenvio
+  ---
+  duration_ms: 1.244417
+  type: 'test'
+  ...
+# Subtest: primeiro instante do dia seguinte rejeita novo pedido sem alterar o roteiro
+ok 11 - primeiro instante do dia seguinte rejeita novo pedido sem alterar o roteiro
+  ---
+  duration_ms: 1.012
+  type: 'test'
+  ...
+# Subtest: primeiro instante do dia seguinte rejeita reenvio, conservando pedido e versão antiga
+ok 12 - primeiro instante do dia seguinte rejeita reenvio, conservando pedido e versão antiga
+  ---
+  duration_ms: 0.653708
+  type: 'test'
+  ...
+# Subtest: pedido exige motivo e prazo válidos e não aceita prazo passado
+ok 13 - pedido exige motivo e prazo válidos e não aceita prazo passado
+  ---
+  duration_ms: 1.602375
+  type: 'test'
+  ...
+# Subtest: aprovação encerra revisão: nova versão, pedido ou segunda aprovação não mutam nada
+ok 14 - aprovação encerra revisão: nova versão, pedido ou segunda aprovação não mutam nada
+  ---
+  duration_ms: 0.416542
+  type: 'test'
+  ...
+# Subtest: bloqueia transições fora do fluxo e decisões sobre versões antigas
+ok 15 - bloqueia transições fora do fluxo e decisões sobre versões antigas
+  ---
+  duration_ms: 0.42825
+  type: 'test'
+  ...
+# Subtest: identificadores da marca e do criador precisam corresponder ao roteiro
+ok 16 - identificadores da marca e do criador precisam corresponder ao roteiro
+  ---
+  duration_ms: 0.249459
+  type: 'test'
+  ...
+# Subtest: rejeita entradas malformadas e versão esperada ausente, fracionária ou inválida
+ok 17 - rejeita entradas malformadas e versão esperada ausente, fracionária ou inválida
+  ---
+  duration_ms: 0.458083
+  type: 'test'
+  ...
+# Subtest: mais de um ciclo de alteração conserva todo o histórico e a marca pode aprovar após o prazo de reenvio
+ok 18 - mais de um ciclo de alteração conserva todo o histórico e a marca pode aprovar após o prazo de reenvio
+  ---
+  duration_ms: 1.270917
+  type: 'test'
+  ...
+# Subtest: objetos devolvidos não permitem editar o estado persistido por fora das transições
+ok 19 - objetos devolvidos não permitem editar o estado persistido por fora das transições
+  ---
+  duration_ms: 0.143416
+  type: 'test'
+  ...
+# Subtest: falha ao persistir uma mudança não modifica o agregado anterior
+ok 20 - falha ao persistir uma mudança não modifica o agregado anterior
+  ---
+  duration_ms: 0.803792
+  type: 'test'
+  ...
+# Subtest: arquivo conserva roteiro aprovado e versões após reiniciar a aplicação
+ok 21 - arquivo conserva roteiro aprovado e versões após reiniciar a aplicação
+  ---
+  duration_ms: 7.551083
+  type: 'test'
+  ...
+# Subtest: armazenamento corrompido falha explicitamente e nunca é substituído por banco vazio
+ok 22 - armazenamento corrompido falha explicitamente e nunca é substituído por banco vazio
+  ---
+  duration_ms: 2.62225
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 171.452208
