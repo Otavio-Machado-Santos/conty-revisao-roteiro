@@ -1,0 +1,95 @@
+{
+  "id": 3,
+  "reviewed_sha": "db12564279a7ab18d3c7e99759f24c69a6a78227",
+  "publication_sha": "c8c7b5eacc67292bbf5636d0a8108bd2d3bb0e70",
+  "verdict": "approved",
+  "summary": "O P2 anterior está resolvido. Quando o prazo vence sem reenvio, o GET mostra change_request_status=expired sem gravar nada. O criador recebe 409 DEADLINE_EXPIRED e a tentativa de aprovar recebe 409 INVALID_STATE. A marca pode renovar pela mesma rota de pedidos de alteração (src/review.js:107-108), com motivo e prazo válidos, e recebe 200. Renovar com prazo já passado dá 422 DEADLINE_EXPIRED; renovar um pedido ainda ativo dá 409 INVALID_STATE. Depois do reenvio, a aprovação funciona normalmente. Fronteira do dia civil de São Paulo: para o prazo 2026-10-09, 2026-10-10T02:59:59.999Z ainda vale e 03:00:00.000Z já não vale. O cálculo usa Intl/IANA e cobre o horário de verão histórico. A flag é derivada na leitura e não é persistida: bytes e mtime do arquivo não mudam com GETs, e o campo não aparece no armazenamento. O histórico preserva v1, o pedido vencido, a renovação, v2 e a aprovação, inclusive depois de reinício. A aprovação é terminal: nova versão, novo pedido, renovação e segunda aprovação dão 409 REVIEW_CLOSED. Pedido sem motivo ou sem prazo dá 422. O README (linhas 17, 50, 58, 64 e 66) descreve o comportamento real. Inclui as escolhas explícitas (sem aprovação direta após o vencimento; a versão guarda só o pedido mais recente, e os anteriores ficam no histórico), o que deixaria diferente com mais tempo e a nota de IA (Codex, sem revisão humana).",
+  "tests": [
+    {
+      "command": "npm test (coordenador, TZ=UTC, Asia/Tokyo e America/Sao_Paulo)",
+      "exit_code": 0,
+      "result": "33/33 em cada fuso"
+    },
+    {
+      "command": "npm test (subagente; também em Pacific/Kiritimati e America/Los_Angeles)",
+      "exit_code": 0,
+      "result": "33/33: deadline 4, http 4, renewal 10, review 13, store 2"
+    },
+    {
+      "command": "node /tmp/conty03-coord.t7Id/probe.mjs <projeto> <scratch> (coordenador, relógio injetado, ScriptStore em arquivo)",
+      "exit_code": 0,
+      "result": "Pedido sem prazo: 422 INVALID_INPUT. Prazo de ontem: 422 DEADLINE_EXPIRED. Prazo de hoje: active. No último ms ainda active, e renovar dá 409 INVALID_STATE. Às 03:00Z, expired, também após reinício. GET sem escrita: bytes e mtime iguais, campo ausente no arquivo. Versão tardia: 409 DEADLINE_EXPIRED. Aprovar vencido: 409 INVALID_STATE. Renovar com prazo passado: 422. Renovação: 200. v2: 201. Aprovação: 200. Depois disso, v3, novo pedido e segunda aprovação dão 409 REVIEW_CLOSED. Estado final após reinício: versões [1 changes_requested superseded_by 2, 2 approved] e histórico de 5 eventos (2 pedidos: 2026-10-09 e 2026-10-10)."
+    },
+    {
+      "command": "node domain-probe.mjs (subagente)",
+      "exit_code": 1,
+      "result": "69/70. A única falha é erro de contagem no próprio probe (esperava 10 eventos; a lista impressa mostra os 9 corretos). Testou 15 fronteiras, incluindo as transições de horário de verão BR de 2014 a 2019; fuzz de 20.088 dias sem divergência; datas inválidas dão 422 sem mutação; expected_version obsoleto dá 409 STALE_VERSION."
+    },
+    {
+      "command": "node http-probe.mjs (subagente, createHttpServer, porta 0, relógio injetado)",
+      "exit_code": 0,
+      "result": "22/22. Rejeições sem mutação; renovação 200; histórico preservado após dois reinícios; pós-aprovação 409 REVIEW_CLOSED."
+    },
+    {
+      "command": "PORT=43917 node src/start.js + curl (subagente, relógio real)",
+      "exit_code": 0,
+      "result": "Fluxo completo com reinício. GETs não mudam sha nem mtime. Os PIDs 33382 e 33415, iniciados pelo subagente, foram encerrados por PID."
+    },
+    {
+      "command": "node mutate.mjs (subagente, 11 mutações em cópia /tmp)",
+      "exit_code": 0,
+      "result": "11/11 detectadas: sem renovação, renovação de pedido ativo, '>' no lugar de '>=', status fixo, GET que persiste, renovação que apaga evento, UTC-03 fixo, aprovação com pedido vencido, reabertura, prazo passado na renovação, renovação que cria versão"
+    },
+    {
+      "command": "sha1 de blob vs. linhas index de delta-apos-claude.diff (subagente)",
+      "exit_code": 0,
+      "result": "14/24 iguais, incluindo src/review.js e todos os arquivos de test/. Os 10 diferentes são só documentação e evidências (README, pareceres, verificacao-final.md), atualizadas no commit de publicação."
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P3",
+      "file": "docs/renovacao-pedido-expirado.md",
+      "line": 52,
+      "title": "Documento da correção ainda diz que revisões, checkout e captura estão pendentes",
+      "details": "O texto é do commit db125. README:70 e docs/verificacao-final.md:20, do commit de publicação, dizem que essas verificações já foram feitas. É só texto desatualizado e não afeta o domínio.",
+      "reproduction": "grep -n pendentes docs/renovacao-pedido-expirado.md",
+      "expected": "Texto coerente com o README sobre o estado das verificações",
+      "actual": "'...ainda estão pendentes'"
+    },
+    {
+      "priority": "P3",
+      "file": "docs/evidence/conty-recibo.json",
+      "line": 6,
+      "title": "Recibo original cita src/review-service.js, que não existe",
+      "details": "O recibo enviado é imutável. A divergência está declarada em docs/verificacao-final.md:22, e README:3 aponta corretamente para src/review.js.",
+      "reproduction": "grep -n review-service docs/evidence/conty-recibo.json; ls src/",
+      "expected": "src/review.js",
+      "actual": "src/review-service.js"
+    }
+  ],
+  "limits": [
+    "Sem git e sem rede: o codigo_sha foi verificado por hashes de blob contra o diff. O publication_sha não foi verificado criptograficamente.",
+    "A virada do dia foi testada com relógio injetado, em domínio e em HTTP. No servidor real, o relógio era cerca de 21:45Z.",
+    "npm run demo não foi rodado porque usa a porta 3003, possivelmente ocupada por outro processo. O fluxo equivalente foi executado na porta 43917.",
+    "flow.gif, screen.jpg e response.jpg não foram inspecionados.",
+    "Escolha de design documentada, não defeito: depois do vencimento, a marca precisa renovar e não pode aprovar diretamente a versão sobre a qual pediu alteração."
+  ],
+  "approval_basis": "O P2 que motivou o changes_requested foi corrigido e reproduzido de forma independente pelo coordenador e pelo subagente: em domínio, em HTTP com relógio controlado e no servidor real com reinício. Os critérios do contrato foram conferidos: motivo e prazo obrigatórios, dia civil de São Paulo correto com o UTC já virado, aprovação terminal, versões e todos os pedidos preservados, estado legível no GET sem adivinhar e README honesto com a nota de IA. Os 33 testes passam em 5 fusos e detectam as 11 mutações. Restam apenas P3. Não houve revisão humana e isto não é aprovação da Conty.",
+  "review_provenance": {
+    "round": 2,
+    "session_id": "6ea1893a-0896-4850-a77e-e0ddc4306c21",
+    "review_file": "revisoes/claude-opus55-delta03/parecer.json",
+    "review_sha256": "27f1c5f34e2c17e9bd2b9a17162c12d2011b91b92483712fd1461dbd11453f1e",
+    "previous_adjustment": "revisao-roteiro: a API cumpre motivo e prazo obrigatórios (422), o prazo civil SP inclusive com o UTC já virado (02:59:59.999Z aceito, 03:00Z rejeitado; fuzz de 54.787 dias sem falha), a aprovação terminal (409 REVIEW_CLOSED), a v1 preservada e a persistência após reinício. Há porém um P2, que conferi pelo coordenador no código e no contrato: um pedido vencido sem reenvio deixa o roteiro preso para sempre em changes_requested, e o README não documenta isso."
+  },
+  "model": "claude-opus-5-5",
+  "review_kind": "independent_subagent_review",
+  "reviewed_after_conty_registration": true,
+  "coordinator_documentation_followup": {
+    "file": "docs/renovacao-pedido-expirado.md",
+    "status": "updated_after_review",
+    "executable_code_unchanged": true,
+    "note": "O coordenador atualizou o estado das revisões/capturas após a aprovação real. O parecer e seus achados foram preservados; não se alega nova revisão do modelo sobre esta edição documental."
+  }
+}

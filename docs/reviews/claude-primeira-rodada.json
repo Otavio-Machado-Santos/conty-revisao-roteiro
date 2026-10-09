@@ -1,0 +1,75 @@
+{
+  "id": 3,
+  "reviewed_sha": "f7212f0ded7caa36370518e6cdcaa8780556f380",
+  "publication_sha": "c5301a8d729b2c3a23aa3f4f29248de4035ccdd3",
+  "verdict": "changes_requested",
+  "summary": "revisao-roteiro: a API cumpre motivo e prazo obrigatórios (422), o prazo civil SP inclusive com o UTC já virado (02:59:59.999Z aceito, 03:00Z rejeitado; fuzz de 54.787 dias sem falha), a aprovação terminal (409 REVIEW_CLOSED), a v1 preservada e a persistência após reinício. Há porém um P2, que conferi pelo coordenador no código e no contrato: um pedido vencido sem reenvio deixa o roteiro preso para sempre em changes_requested, e o README não documenta isso.",
+  "tests": [
+    {
+      "command": "npm test",
+      "exit_code": 0,
+      "result": "23/23 (deadline 4, http 4, review 13, store 2)"
+    },
+    {
+      "command": "TZ=UTC|Asia/Tokyo|America/Sao_Paulo node --test",
+      "exit_code": 0,
+      "result": "23/23 em cada fuso"
+    },
+    {
+      "command": "sha1 de blob vs index do diff",
+      "exit_code": 0,
+      "result": "15/16 MATCH; só o README difere (nota de IA da publicação)"
+    },
+    {
+      "command": "node http-probe.mjs (servidor em 43903)",
+      "exit_code": 0,
+      "result": "47/47 checagens: 422/403/409/415/400/413/404/405 corretas; v2 preserva v1; pós-aprovação tudo 409 REVIEW_CLOSED"
+    },
+    {
+      "command": "node domain-probe.mjs / deadend-http.mjs (relógio injetado)",
+      "exit_code": 0,
+      "result": "Depois do prazo: versions 409 DEADLINE_EXPIRED, change-requests 409 INVALID_STATE, approval 409 INVALID_STATE; GET mostra state=changes_requested sem indicar expiração; igual 1 ano depois"
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P2",
+      "file": "src/review.js",
+      "line": 94,
+      "title": "Pedido de alteração vencido trava o roteiro para sempre em changes_requested",
+      "details": "submitVersion (113-119) recusa o reenvio após expires_at. requestChanges (94) e approve (136) exigem 'awaiting_review'. Não existe transição de saída, e o agregado não sinaliza a expiração. O pedido vencido continua bloqueando o roteiro, o que contraria 'Pedido de alteração com prazo que já passou não vale' e 'Dá para seguir o fluxo inteiro sem adivinhar o estado'. O README (seção 'Prazo e escolhas', ~linha 64) diz que o prazo 'não limita a decisão da marca', mas a marca também não consegue decidir, e o beco sem saída não aparece entre o que ficou de fora.",
+      "reproduction": "Relógio 2026-10-09T15:00Z: criar; POST change-requests {deadline:'2026-10-09'} dá 200. Relógio 2026-10-10T03:00Z: POST versions dá 409 DEADLINE_EXPIRED; POST change-requests {deadline:'2026-10-20'} dá 409 INVALID_STATE; POST approval dá 409 INVALID_STATE; GET mostra changes_requested (/tmp/conty03-probe.lVHA/deadend-http.mjs)",
+      "expected": "Caminho explícito após o vencimento (estado/campo expired, com a marca podendo pedir de novo ou decidir) ou, no mínimo, a limitação documentada no README",
+      "actual": "Estado terminal implícito, sem documentação; toda escrita devolve 409"
+    },
+    {
+      "priority": "P3",
+      "file": "docs/evidence/conty-recibo.json",
+      "line": 5,
+      "title": "A nota enviada à Conty cita src/review-service.js, que não existe",
+      "details": "O arquivo real é src/review.js. O README:3 está correto.",
+      "reproduction": "grep src/review-service.js docs/evidence/conty-recibo.json; ls src/",
+      "expected": "src/review.js",
+      "actual": "src/review-service.js"
+    },
+    {
+      "priority": "P3",
+      "file": "docs/verificacao-final.md",
+      "line": 14,
+      "title": "Texto padrão cita integrações externas mockadas que não existem",
+      "details": "Frase reaproveitada; a entrega não tem integração externa.",
+      "reproduction": "grep -n 'integrações externas' docs/verificacao-final.md",
+      "expected": "Sem menção",
+      "actual": "Menção genérica a mocks"
+    }
+  ],
+  "limits": [
+    "Sem git: SHA verificado por blobs. Sem rede: recibo conferido pela cópia local.",
+    "flow.gif e response.jpg não foram inspecionados quadro a quadro.",
+    "A virada UTC foi testada com relógio injetado; o relógio real das sondagens era 21:13Z."
+  ],
+  "approval_basis": "Não aprovado por causa do P2 aberto (src/review.js:94/113-119/136), confirmado pelo coordenador. Os demais critérios foram reproduzidos. Para aprovar: dar saída ao pedido vencido ou documentar explicitamente o estado pós-vencimento.",
+  "model": "claude-opus-5-5",
+  "review_kind": "initial_subagent_review",
+  "superseded_by": "db12564279a7ab18d3c7e99759f24c69a6a78227"
+}
