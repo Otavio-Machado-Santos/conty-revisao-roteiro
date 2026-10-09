@@ -1,0 +1,61 @@
+{
+  "challenge": 3,
+  "reviewed_sha": "1781eb0d47cf6b57b298ea37b811567f4982ac84",
+  "base_sha": "8554cf137ded9626066defd7d365f9eab6bc1aab",
+  "reviewer": "Codex /root/implementar_vendas, independente do autor do desafio3",
+  "review_axis": "B: robustez, API, persistência e transições",
+  "checked_at": "2026-10-09T19:07:49.200Z",
+  "runtime": "Node.js v22.23.3",
+  "repository": "/Users/flowbix_redfinger/XiaomiMiMoProjects/conty challenge/projetos/conty-revisao-roteiro",
+  "read": ["docs/enunciado.txt", "README.md", "package.json", "src/*.js", "test/*.test.js", "diff da base ao candidato"],
+  "commands": [
+    {
+      "command": "git rev-parse HEAD; git status --short",
+      "result": "Candidato correto confirmado; checkout sem mudanças."
+    },
+    {
+      "command": "PATH='<workspace>/ferramentas/node22/node_modules/node/bin:'\"$PATH\" npm test",
+      "exit_code": 0,
+      "result": "22 testes, 22 passaram, 0 falhas."
+    },
+    {
+      "command": "PATH='<workspace>/ferramentas/node22/node_modules/node/bin:'\"$PATH\" node '<workspace>/revisoes/probes/03-b.mjs'",
+      "exit_code": 0,
+      "result": "5 grupos de probes próprios passaram e 1 observação de robustez foi reproduzida."
+    },
+    {
+      "command": "git diff --check 8554cf137ded9626066defd7d365f9eab6bc1aab...1781eb0d47cf6b57b298ea37b811567f4982ac84",
+      "exit_code": 0,
+      "result": "Sem erro de whitespace."
+    }
+  ],
+  "own_probes": [
+    { "case": "Falha real de rename causada por diretório no destino", "result": "HTTP500; agregado em memória não mudou, temporário foi removido, mesmo comando funcionou após restaurar o destino." },
+    { "case": "20 reenvios simultâneos contra versão1", "result": "1 HTTP201 e 19 STALE_VERSION/409; somente2 versões, histórico3, conteúdo original preservado." },
+    { "case": "10 aprovações simultâneas, restart e objetos devolvidos", "result": "1 HTTP200 e9 REVIEW_CLOSED/409; persistência reabre em approved, comandos não reabrem, mudanças em cópias não afetam estado." },
+    { "case": "8 payloads com tipos inválidos,6 datas inválidas e prazo passado via HTTP", "result": "422 com código coerente, sem mutação do agregado." },
+    { "case": "Calendário IANA em8 datas, incluindo0001/9999, bissexto e DST", "result": "valid_until pertence ao dia informado; expires_at é o próximo milissegundo e já pertence a outro dia." }
+  ],
+  "findings": [
+    {
+      "id": "03-B-01",
+      "priority": "P3",
+      "classification": "suggestion",
+      "blocking": false,
+      "file": "src/store.js",
+      "line": 18,
+      "title": "Validar coerência semântica adicional do snapshot na carga",
+      "reproduction": "Em arquivo temporário criado pelo serviço, aprovar um roteiro; editar somente versions[-1].state para awaiting_review e reabrir ScriptStore. O loader aceita o agregado state=approved com a versão atual awaiting_review. Probe reproduzível em revisoes/probes/03-b.mjs.",
+      "impact": "Um arquivo alterado externamente pode produzir resposta contraditória; não foi possível gerar essa inconsistência pelos comandos ou HTTP da aplicação.",
+      "recommendation": "Opcionalmente validar states do agregado/versão atual, current_version inteiro, sequência e campos necessários de change_request/approved_at na carga.",
+      "contract_relation": "Sugestão de robustez do armazenamento. O contrato funcional de versões, histórico, prazo e fechamento passou; nenhuma exigência de recuperação de corrupção semântica externa está no enunciado."
+    }
+  ],
+  "requirements_status": "Todos os requisitos funcionais revisados passaram; nenhuma correção bloqueante encontrada.",
+  "limitations": [
+    "Um processo local por arquivo, sem lock multiprocesso ou durabilidade perante falha de energia; limites declarados no README.",
+    "IDs de ator recebidos no JSON não são autenticação; limite declarado no README e fora do escopo exigido.",
+    "A revisão não executou deploy ou integração externa; código do candidato permaneceu inalterado."
+  ],
+  "verdict": "approved_with_nonblocking_suggestion"
+}

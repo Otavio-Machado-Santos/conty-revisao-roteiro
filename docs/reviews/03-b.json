@@ -1,0 +1,98 @@
+{
+  "challenge": 3,
+  "reviewed_sha": "f7212f0ded7caa36370518e6cdcaa8780556f380",
+  "base_sha": "8554cf137ded9626066defd7d365f9eab6bc1aab",
+  "reviewer": "Codex /root/implementar_vendas, independente do autor do desafio3",
+  "review_axis": "B: robustez, API, persistência e transições; delta de campos desconhecidos com chave vazia",
+  "checked_at": "2026-10-09T19:22:19.275Z",
+  "runtime": "Node.js v22.23.3",
+  "repository": "/Users/flowbix_redfinger/XiaomiMiMoProjects/conty challenge/projetos/conty-revisao-roteiro",
+  "read": [
+    "docs/enunciado.txt",
+    "README.md",
+    "package.json",
+    "src/*.js",
+    "test/*.test.js",
+    "diff da base ao candidato"
+  ],
+  "commands": [
+    {
+      "command": "git rev-parse HEAD; git status --short",
+      "result": "SHA delta fixo correto e checkout limpo."
+    },
+    {
+      "command": "git diff 1781eb0d47cf6b57b298ea37b811567f4982ac84...f7212f0ded7caa36370518e6cdcaa8780556f380",
+      "result": "Condição extra !== undefined corrige o bypass de chave vazia; testes e log atualizados."
+    },
+    {
+      "command": "npm test (Node.js 22 no PATH)",
+      "exit_code": 0,
+      "result": "23 testes passaram, nenhuma falha."
+    },
+    {
+      "command": "git diff --check 1781eb0d47cf6b57b298ea37b811567f4982ac84...f7212f0ded7caa36370518e6cdcaa8780556f380",
+      "exit_code": 0,
+      "result": "Nenhum erro de whitespace."
+    },
+    {
+      "command": "node revisoes/probes/03-b.mjs (Node.js 22)",
+      "exit_code": 0,
+      "result": "5 grupos anteriores passaram novamente; sugestão P3 anterior permanece reproduzível e não bloqueante."
+    },
+    {
+      "command": "node revisoes/probes/03-b-delta.mjs (Node.js 22)",
+      "exit_code": 0,
+      "result": "16 entradas HTTP rejeitadas com422 nas quatro escritas, sem alterar bytes/estado/IDs; fluxo válido e restart aprovados."
+    }
+  ],
+  "own_probes": [
+    {
+      "case": "Falha real de rename causada por diretório no destino",
+      "result": "HTTP500; agregado em memória não mudou, temporário foi removido, mesmo comando funcionou após restaurar o destino."
+    },
+    {
+      "case": "20 reenvios simultâneos contra versão1",
+      "result": "1 HTTP201 e 19 STALE_VERSION/409; somente2 versões, histórico3, conteúdo original preservado."
+    },
+    {
+      "case": "10 aprovações simultâneas, restart e objetos devolvidos",
+      "result": "1 HTTP200 e9 REVIEW_CLOSED/409; persistência reabre em approved, comandos não reabrem, mudanças em cópias não afetam estado."
+    },
+    {
+      "case": "8 payloads com tipos inválidos,6 datas inválidas e prazo passado via HTTP",
+      "result": "422 com código coerente, sem mutação do agregado."
+    },
+    {
+      "case": "Calendário IANA em8 datas, incluindo0001/9999, bissexto e DST",
+      "result": "valid_until pertence ao dia informado; expires_at é o próximo milissegundo e já pertence a outro dia."
+    },
+    {
+      "case": "Campo vazio e segundo desconhecido nas quatro escritas, em ordens diferentes",
+      "result": "16 HTTP422 com INVALID_INPUT e field coerente; antes/depois de cada tentativa, bytes, agregado e gerador de ID ficaram intactos. Fluxo no último instante manteve histórico4, versões2 e aprovado após restart."
+    }
+  ],
+  "findings": [
+    {
+      "id": "03-B-01",
+      "priority": "P3",
+      "classification": "suggestion",
+      "blocking": false,
+      "file": "src/store.js",
+      "line": 18,
+      "title": "Validar coerência semântica adicional do snapshot na carga",
+      "reproduction": "Em arquivo temporário criado pelo serviço, aprovar um roteiro; editar somente versions[-1].state para awaiting_review e reabrir ScriptStore. O loader aceita o agregado state=approved com a versão atual awaiting_review. Probe reproduzível em revisoes/probes/03-b.mjs.",
+      "impact": "Um arquivo alterado externamente pode produzir resposta contraditória; não foi possível gerar essa inconsistência pelos comandos ou HTTP da aplicação.",
+      "recommendation": "Opcionalmente validar states do agregado/versão atual, current_version inteiro, sequência e campos necessários de change_request/approved_at na carga.",
+      "contract_relation": "Sugestão de robustez do armazenamento. O contrato funcional de versões, histórico, prazo e fechamento passou; nenhuma exigência de recuperação de corrupção semântica externa está no enunciado."
+    }
+  ],
+  "requirements_status": "Requisitos funcionais revisados continuam satisfeitos. Delta bloqueia campo vazio antes de mutações em todas as escritas, inclusive quando precede outro campo desconhecido.",
+  "limitations": [
+    "Um processo local por arquivo, sem lock multiprocesso ou durabilidade perante falha de energia; limites declarados no README.",
+    "IDs de ator recebidos no JSON não são autenticação; limite declarado no README e fora do escopo exigido.",
+    "A revisão não executou deploy ou integração externa; código do candidato permaneceu inalterado."
+  ],
+  "verdict": "approved_with_nonblocking_suggestion",
+  "previous_reviewed_sha": "1781eb0d47cf6b57b298ea37b811567f4982ac84",
+  "delta_base_sha": "1781eb0d47cf6b57b298ea37b811567f4982ac84"
+}

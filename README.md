@@ -67,4 +67,6 @@ O domínio não depende de HTTP. O processo grava snapshots JSON por arquivo tem
 
 ## Uso de IA e revisão
 
-Implementação, documentação e testes foram produzidos por um agente Codex, que executou os testes e a demonstração HTTP. As revisões por outros agentes Codex independentes ainda serão realizadas e registradas antes do envio. Não houve revisão humana declarada. Nenhuma credencial ou dado real de campanha é necessário.
+Codex produziu código, testes e documentação. Dois agentes Codex independentes do implementador revisaram o commit `f7212f0ded7caa36370518e6cdcaa8780556f380` e liberaram a entrega após testes e sondagens próprias. Os pareceres completos estão em `docs/reviews/`. O coordenador conferiu a instalação e os testes em checkout isolado e registrou o fluxo HTTP real. Não foi realizada revisão humana do código. A validação usa dados sintéticos e ambiente local; limites e interpretações do contrato estão documentados.
+
+[Verificação final, revisões independentes e captura do fluxo real](docs/verificacao-final.md).

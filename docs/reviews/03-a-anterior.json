@@ -1,0 +1,97 @@
+{
+  "challenge": 3,
+  "title": "Revisão de roteiro",
+  "reviewed_sha": "1781eb0d47cf6b57b298ea37b811567f4982ac84",
+  "base_sha": "8554cf137ded9626066defd7d365f9eab6bc1aab",
+  "reviewer": "/root/implementar_descoberta — revisão independente A, Codex; não implementou este desafio",
+  "runtime": "Node v22.23.3",
+  "repository": "/Users/flowbix_redfinger/XiaomiMiMoProjects/conty challenge/projetos/conty-revisao-roteiro",
+  "scope": "Revisão somente leitura de docs/enunciado.txt, README, todo o domínio, HTTP, armazenamento, scripts e testes. Casos adversariais executados fora do repositório. Nenhum push ou envio.",
+  "commands": [
+    {
+      "command": "git rev-parse HEAD",
+      "exit_code": 0,
+      "result": "1781eb0d47cf6b57b298ea37b811567f4982ac84, conferido antes e após a revisão"
+    },
+    {
+      "command": "npm test",
+      "exit_code": 0,
+      "result": "22 testes, 22 passaram, 0 falharam; duração reportada 183.629167 ms"
+    },
+    {
+      "command": "node --check em todos os arquivos .js de src, scripts e test",
+      "exit_code": 0,
+      "result": "11 arquivos passaram; nenhum diagnóstico"
+    },
+    {
+      "command": "node '/Users/flowbix_redfinger/XiaomiMiMoProjects/conty challenge/revisoes/03-a-adversarial.mjs'",
+      "exit_code": 0,
+      "result": "Todos os grupos de verificação contratual passaram: 49 datas civis com duas bordas, 20 ciclos com 21 versões e 42 eventos, motivo/prazo inválidos ou passados, reinício com prazo expirado e concorrência HTTP. Uma observação adicional de campos extras foi reproduzida e separada do contrato."
+    },
+    {
+      "command": "git diff 8554cf137ded9626066defd7d365f9eab6bc1aab...1781eb0d47cf6b57b298ea37b811567f4982ac84 --check",
+      "exit_code": 0,
+      "result": "Nenhum erro de whitespace"
+    },
+    {
+      "command": "git status --porcelain",
+      "exit_code": 0,
+      "result": "Vazio antes e após: nenhum arquivo do repositório alterado"
+    }
+  ],
+  "contract_validation": [
+    {
+      "requirement": "Versões com estado explícito e fluxo compreensível",
+      "result": "pass",
+      "evidence": "create → awaiting_review; requestChanges → changes_requested; submitVersion → awaiting_review; approve → approved. Respostas incluem state, current_version, versões e histórico; transições inválidas são recusadas sem mutar o agregado."
+    },
+    {
+      "requirement": "Alteração exige motivo e prazo; prazo passado não vale",
+      "result": "pass",
+      "evidence": "Probes independentes com motivo ausente/nulo/vazio/branco/número/array/objeto e prazo ausente/nulo/impossível/formato incorreto ou dia passado foram recusados. Histórico e versão foram comparados integralmente antes/depois."
+    },
+    {
+      "requirement": "Último instante civil de São Paulo vale; primeiro do dia seguinte não",
+      "result": "pass",
+      "evidence": "49 datas entre 2000 e 2030, incluindo bissexto, virada do ano e períodos históricos de horário de verão. Comparação independente com calendário civil de America/Sao_Paulo confirma que valid_until pertence ao dia e expires_at já pertence ao seguinte, separados por 1 ms. Pedido e reenvio passam no último instante; novos pedidos e reenvios tardios falham no seguinte sem mutação."
+    },
+    {
+      "requirement": "Aprovação é terminal",
+      "result": "pass",
+      "evidence": "Após 20 ciclos, aprovação da versão 21 bloqueia nova versão, novo pedido e segunda aprovação com REVIEW_CLOSED. Snapshot inteiro permanece idêntico. Também confirmado por HTTP para novo pedido após aprovação."
+    },
+    {
+      "requirement": "Versões antigas e histórico permanecem",
+      "result": "pass",
+      "evidence": "20 ciclos preservaram exatamente os 21 conteúdos, os 20 motivos com o número de substituição correto e 42 eventos sequenciais. Reinício de armazenamento temporário preservou pedido pendente e rejeitou reenvio tardio sem apagar dados."
+    },
+    {
+      "requirement": "API, exemplos, relógio controlado, escolhas futuras e nota de IA",
+      "result": "pass",
+      "evidence": "README inclui comandos, rotas, requests, respostas e limitações explícitas de persistência/autenticação. Testes injetam relógio. Nota descreve implementação por IA e não inventa revisão humana; revisão independente pendente deve ser atualizada pelo coordenador após as duas revisões."
+    }
+  ],
+  "findings": [],
+  "outside_contract_suggestions": [
+    {
+      "priority": "P3",
+      "blocking": false,
+      "file": "src/review.js",
+      "line": 10,
+      "end_line": 11,
+      "description": "A validação adicional de campos desconhecidos documentada no README deixa passar uma chave vazia: find retorna a string vazia e if (extra) a trata como falso. Uma chave vazia antes de outro campo desconhecido também impede a rejeição deste. Não contorna as regras de estado, motivo, prazo, versão ou aprovação exigidas pelo enunciado.",
+      "proof": {
+        "method": "POST /scripts",
+        "body": { "": 1, "unexpected": 2, "creator_id": "c", "brand_id": "b", "content": "x" },
+        "observed": "HTTP 201, state awaiting_review",
+        "documented_extra_behavior": "README afirma que campos desconhecidos são rejeitados"
+      },
+      "suggestion": "Se quiser cumprir também essa validação extra, verificar extra !== undefined ou usar some em vez de testar a verdade da string. Adicionar um caso com chave vazia antes de outro campo desconhecido."
+    }
+  ],
+  "verdict": "pass",
+  "limitations": [
+    "Pass se refere ao enunciado do desafio e ao SHA fixado; uma alteração posterior precisa de conferência do diff e dos checks afetados.",
+    "A revisão não representa deploy ou teste em produção. Persistência em processo único e autenticação demonstrativa estão explicitamente limitadas no README."
+  ]
+}
