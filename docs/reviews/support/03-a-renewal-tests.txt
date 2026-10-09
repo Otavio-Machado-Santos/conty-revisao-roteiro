@@ -1,0 +1,212 @@
+
+> conty-revisao-roteiro@1.0.0 test
+> node --test
+
+TAP version 13
+# Subtest: prazo civil de São Paulo inclui o último milissegundo apesar do dia UTC já ter virado
+ok 1 - prazo civil de São Paulo inclui o último milissegundo apesar do dia UTC já ter virado
+  ---
+  duration_ms: 0.879667
+  type: 'test'
+  ...
+# Subtest: calendário trata ano bissexto e virada de ano
+ok 2 - calendário trata ano bissexto e virada de ano
+  ---
+  duration_ms: 0.902208
+  type: 'test'
+  ...
+# Subtest: não fixa UTC-03: início e fim históricos do horário de verão mantêm o dia completo
+ok 3 - não fixa UTC-03: início e fim históricos do horário de verão mantêm o dia completo
+  ---
+  duration_ms: 0.644958
+  type: 'test'
+  ...
+# Subtest: rejeita datas impossíveis, formatos permissivos, objetos e prazo ausente
+ok 4 - rejeita datas impossíveis, formatos permissivos, objetos e prazo ausente
+  ---
+  duration_ms: 0.661875
+  type: 'test'
+  ...
+# Subtest: HTTP executa criação → alteração → nova versão → aprovação, e rejeita reabertura
+ok 5 - HTTP executa criação → alteração → nova versão → aprovação, e rejeita reabertura
+  ---
+  duration_ms: 26.504292
+  type: 'test'
+  ...
+# Subtest: HTTP comprova limite de prazo com relógio injetado e erros auditáveis
+ok 6 - HTTP comprova limite de prazo com relógio injetado e erros auditáveis
+  ---
+  duration_ms: 9.9535
+  type: 'test'
+  ...
+# Subtest: HTTP valida motivo, prazo, estado, ator e versão atual
+ok 7 - HTTP valida motivo, prazo, estado, ator e versão atual
+  ---
+  duration_ms: 7.866
+  type: 'test'
+  ...
+# Subtest: HTTP rejeita JSON inválido, tipo incorreto, corpo grande e métodos incompatíveis
+ok 8 - HTTP rejeita JSON inválido, tipo incorreto, corpo grande e métodos incompatíveis
+  ---
+  duration_ms: 10.103584
+  type: 'test'
+  ...
+# Subtest: pedido expirado permite novo pedido válido, reenvio e aprovação no mesmo roteiro
+ok 9 - pedido expirado permite novo pedido válido, reenvio e aprovação no mesmo roteiro
+  ---
+  duration_ms: 2.075708
+  type: 'test'
+  ...
+# Subtest: renovação de 2026-03-13: último ms bloqueia, primeiro ms permite, sem apagar pedido anterior
+ok 10 - renovação de 2026-03-13: último ms bloqueia, primeiro ms permite, sem apagar pedido anterior
+  ---
+  duration_ms: 1.884584
+  type: 'test'
+  ...
+# Subtest: renovação de 2018-11-04: último ms bloqueia, primeiro ms permite, sem apagar pedido anterior
+ok 11 - renovação de 2018-11-04: último ms bloqueia, primeiro ms permite, sem apagar pedido anterior
+  ---
+  duration_ms: 0.470708
+  type: 'test'
+  ...
+# Subtest: renovação de 2019-02-16: último ms bloqueia, primeiro ms permite, sem apagar pedido anterior
+ok 12 - renovação de 2019-02-16: último ms bloqueia, primeiro ms permite, sem apagar pedido anterior
+  ---
+  duration_ms: 0.391792
+  type: 'test'
+  ...
+# Subtest: renovação inválida não altera estado, pedido, histórico ou arquivo
+ok 13 - renovação inválida não altera estado, pedido, histórico ou arquivo
+  ---
+  duration_ms: 2.562166
+  type: 'test'
+  ...
+# Subtest: renovações sucessivas conservam motivos, prazos, autores e datas até aprovação terminal
+ok 14 - renovações sucessivas conservam motivos, prazos, autores e datas até aprovação terminal
+  ---
+  duration_ms: 1.67075
+  type: 'test'
+  ...
+# Subtest: GET projeta expiração pelo relógio sem persistir status, mutar histórico ou exigir migração
+ok 15 - GET projeta expiração pelo relógio sem persistir status, mutar histórico ou exigir migração
+  ---
+  duration_ms: 1.948333
+  type: 'test'
+  ...
+# Subtest: falha ao persistir renovação conserva o pedido expirado e o arquivo anterior
+ok 16 - falha ao persistir renovação conserva o pedido expirado e o arquivo anterior
+  ---
+  duration_ms: 1.184125
+  type: 'test'
+  ...
+# Subtest: HTTP mostra expiração, rejeita escritas inválidas sem efeitos e retoma até aprovação
+ok 17 - HTTP mostra expiração, rejeita escritas inválidas sem efeitos e retoma até aprovação
+  ---
+  duration_ms: 52.548375
+  type: 'test'
+  ...
+# Subtest: HTTP serializa duas renovações concorrentes: somente a primeira substitui o pedido expirado
+ok 18 - HTTP serializa duas renovações concorrentes: somente a primeira substitui o pedido expirado
+  ---
+  duration_ms: 8.973625
+  type: 'test'
+  ...
+# Subtest: fluxo completo preserva versões, pedido, autores e histórico sequencial
+ok 19 - fluxo completo preserva versões, pedido, autores e histórico sequencial
+  ---
+  duration_ms: 2.587333
+  type: 'test'
+  ...
+# Subtest: último instante do dia em São Paulo aceita pedido e reenvio
+ok 20 - último instante do dia em São Paulo aceita pedido e reenvio
+  ---
+  duration_ms: 1.284083
+  type: 'test'
+  ...
+# Subtest: primeiro instante do dia seguinte rejeita novo pedido sem alterar o roteiro
+ok 21 - primeiro instante do dia seguinte rejeita novo pedido sem alterar o roteiro
+  ---
+  duration_ms: 0.444417
+  type: 'test'
+  ...
+# Subtest: primeiro instante do dia seguinte rejeita reenvio, conservando pedido e versão antiga
+ok 22 - primeiro instante do dia seguinte rejeita reenvio, conservando pedido e versão antiga
+  ---
+  duration_ms: 0.251833
+  type: 'test'
+  ...
+# Subtest: pedido exige motivo e prazo válidos e não aceita prazo passado
+ok 23 - pedido exige motivo e prazo válidos e não aceita prazo passado
+  ---
+  duration_ms: 0.618708
+  type: 'test'
+  ...
+# Subtest: aprovação encerra revisão: nova versão, pedido ou segunda aprovação não mutam nada
+ok 24 - aprovação encerra revisão: nova versão, pedido ou segunda aprovação não mutam nada
+  ---
+  duration_ms: 0.129208
+  type: 'test'
+  ...
+# Subtest: bloqueia transições fora do fluxo e decisões sobre versões antigas
+ok 25 - bloqueia transições fora do fluxo e decisões sobre versões antigas
+  ---
+  duration_ms: 0.247542
+  type: 'test'
+  ...
+# Subtest: identificadores da marca e do criador precisam corresponder ao roteiro
+ok 26 - identificadores da marca e do criador precisam corresponder ao roteiro
+  ---
+  duration_ms: 0.172875
+  type: 'test'
+  ...
+# Subtest: rejeita entradas malformadas e versão esperada ausente, fracionária ou inválida
+ok 27 - rejeita entradas malformadas e versão esperada ausente, fracionária ou inválida
+  ---
+  duration_ms: 0.317292
+  type: 'test'
+  ...
+# Subtest: mais de um ciclo de alteração conserva todo o histórico e a marca pode aprovar após o prazo de reenvio
+ok 28 - mais de um ciclo de alteração conserva todo o histórico e a marca pode aprovar após o prazo de reenvio
+  ---
+  duration_ms: 1.303375
+  type: 'test'
+  ...
+# Subtest: objetos devolvidos não permitem editar o estado persistido por fora das transições
+ok 29 - objetos devolvidos não permitem editar o estado persistido por fora das transições
+  ---
+  duration_ms: 0.229208
+  type: 'test'
+  ...
+# Subtest: falha ao persistir uma mudança não modifica o agregado anterior
+ok 30 - falha ao persistir uma mudança não modifica o agregado anterior
+  ---
+  duration_ms: 0.747916
+  type: 'test'
+  ...
+# Subtest: campo desconhecido vazio é rejeitado em todas as escritas, sem efeitos parciais
+ok 31 - campo desconhecido vazio é rejeitado em todas as escritas, sem efeitos parciais
+  ---
+  duration_ms: 0.268083
+  type: 'test'
+  ...
+# Subtest: arquivo conserva roteiro aprovado e versões após reiniciar a aplicação
+ok 32 - arquivo conserva roteiro aprovado e versões após reiniciar a aplicação
+  ---
+  duration_ms: 4.969459
+  type: 'test'
+  ...
+# Subtest: armazenamento corrompido falha explicitamente e nunca é substituído por banco vazio
+ok 33 - armazenamento corrompido falha explicitamente e nunca é substituído por banco vazio
+  ---
+  duration_ms: 2.137167
+  type: 'test'
+  ...
+1..33
+# tests 33
+# suites 0
+# pass 33
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 149.636417

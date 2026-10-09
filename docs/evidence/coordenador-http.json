@@ -1,12 +1,42 @@
 {
   "challenge": 3,
-  "started_at": "2026-10-09T19:37:34.878Z",
-  "finished_at": "2026-10-09T19:37:34.921Z",
-  "environment": "macOS, Node22, HTTP loopback, dados sintéticos",
+  "started_at": "2026-10-09T21:32:04.410Z",
+  "finished_at": "2026-10-09T21:32:04.506Z",
+  "environment": "macOS, Node22, HTTP loopback; handler e domínio reais; relógio injetado no bootstrap de evidência; dados fictícios em memória",
+  "source_sha": "db12564279a7ab18d3c7e99759f24c69a6a78227",
   "passed": true,
   "steps": [
     {
-      "label": "Criador envia a primeira versão",
+      "label": "Fixture local: relógio controlado antes do prazo",
+      "method": "POST",
+      "path": "/__evidence_clock",
+      "request": {
+        "instant": "2026-10-09T20:00:00.000Z"
+      },
+      "http_status": 200,
+      "response": {
+        "evidence_only": true,
+        "instant": "2026-10-09T20:00:00.000Z"
+      },
+      "checks": [
+        {
+          "field": "instant",
+          "expected": "2026-10-09T20:00:00.000Z",
+          "actual": "2026-10-09T20:00:00.000Z",
+          "passed": true
+        },
+        {
+          "field": "evidence_only",
+          "expected": true,
+          "actual": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 13
+    },
+    {
+      "label": "Criador envia v1; nenhuma alteração ativa",
       "method": "POST",
       "path": "/scripts",
       "request": {
@@ -16,21 +46,21 @@
       },
       "http_status": 201,
       "response": {
-        "id": "9dac4308-e934-4b07-871d-efe9cea32fd3",
+        "id": "9bb8adc0-edd5-40bf-b14e-c37358a155fd",
         "creator_id": "creator-evidence",
         "brand_id": "brand-evidence",
         "time_zone": "America/Sao_Paulo",
         "state": "awaiting_review",
         "current_version": 1,
-        "created_at": "2026-10-09T19:37:34.884Z",
-        "updated_at": "2026-10-09T19:37:34.884Z",
+        "created_at": "2026-10-09T20:00:00.000Z",
+        "updated_at": "2026-10-09T20:00:00.000Z",
         "approved_at": null,
         "versions": [
           {
             "number": 1,
             "content": "Versão inicial do roteiro.",
             "state": "awaiting_review",
-            "submitted_at": "2026-10-09T19:37:34.884Z",
+            "submitted_at": "2026-10-09T20:00:00.000Z",
             "change_request": null,
             "superseded_by": null,
             "approved_at": null
@@ -42,10 +72,169 @@
             "type": "version_submitted",
             "actor_role": "creator",
             "actor_id": "creator-evidence",
-            "at": "2026-10-09T19:37:34.884Z",
+            "at": "2026-10-09T20:00:00.000Z",
             "version": 1
           }
-        ]
+        ],
+        "change_request_status": null
+      },
+      "checks": [
+        {
+          "field": "state",
+          "expected": "awaiting_review",
+          "actual": "awaiting_review",
+          "passed": true
+        },
+        {
+          "field": "current_version",
+          "expected": 1,
+          "actual": 1,
+          "passed": true
+        },
+        {
+          "field": "change_request_status",
+          "expected": null,
+          "actual": null,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 4
+    },
+    {
+      "label": "Marca pede alteração com prazo civil de9/10 em São Paulo",
+      "method": "POST",
+      "path": "/scripts/9bb8adc0-edd5-40bf-b14e-c37358a155fd/change-requests",
+      "request": {
+        "brand_id": "brand-evidence",
+        "expected_version": 1,
+        "reason": "Explique o benefício antes da oferta.",
+        "deadline": "2026-10-09"
+      },
+      "http_status": 200,
+      "response": {
+        "id": "9bb8adc0-edd5-40bf-b14e-c37358a155fd",
+        "creator_id": "creator-evidence",
+        "brand_id": "brand-evidence",
+        "time_zone": "America/Sao_Paulo",
+        "state": "changes_requested",
+        "current_version": 1,
+        "created_at": "2026-10-09T20:00:00.000Z",
+        "updated_at": "2026-10-09T20:00:00.000Z",
+        "approved_at": null,
+        "versions": [
+          {
+            "number": 1,
+            "content": "Versão inicial do roteiro.",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T20:00:00.000Z",
+            "change_request": {
+              "reason": "Explique o benefício antes da oferta.",
+              "deadline": "2026-10-09",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-10T02:59:59.999Z",
+              "expires_at": "2026-10-10T03:00:00.000Z",
+              "requested_at": "2026-10-09T20:00:00.000Z",
+              "requested_by": "brand-evidence"
+            },
+            "superseded_by": null,
+            "approved_at": null
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "creator-evidence",
+            "at": "2026-10-09T20:00:00.000Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand-evidence",
+            "at": "2026-10-09T20:00:00.000Z",
+            "version": 1,
+            "reason": "Explique o benefício antes da oferta.",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          }
+        ],
+        "change_request_status": "active"
+      },
+      "checks": [
+        {
+          "field": "state",
+          "expected": "changes_requested",
+          "actual": "changes_requested",
+          "passed": true
+        },
+        {
+          "field": "change_request_status",
+          "expected": "active",
+          "actual": "active",
+          "passed": true
+        },
+        {
+          "field": "versions.0.change_request.deadline",
+          "expected": "2026-10-09",
+          "actual": "2026-10-09",
+          "passed": true
+        },
+        {
+          "field": "versions.0.change_request.expires_at",
+          "expected": "2026-10-10T03:00:00.000Z",
+          "actual": "2026-10-10T03:00:00.000Z",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 6
+    },
+    {
+      "label": "Roteiro separado para testar reenvio no limite exato",
+      "method": "POST",
+      "path": "/scripts",
+      "request": {
+        "creator_id": "boundary-creator",
+        "brand_id": "boundary-brand",
+        "content": "v1 do teste do limite."
+      },
+      "http_status": 201,
+      "response": {
+        "id": "82713c36-30c7-4962-9c8e-9f158c2c8d70",
+        "creator_id": "boundary-creator",
+        "brand_id": "boundary-brand",
+        "time_zone": "America/Sao_Paulo",
+        "state": "awaiting_review",
+        "current_version": 1,
+        "created_at": "2026-10-09T20:00:00.000Z",
+        "updated_at": "2026-10-09T20:00:00.000Z",
+        "approved_at": null,
+        "versions": [
+          {
+            "number": 1,
+            "content": "v1 do teste do limite.",
+            "state": "awaiting_review",
+            "submitted_at": "2026-10-09T20:00:00.000Z",
+            "change_request": null,
+            "superseded_by": null,
+            "approved_at": null
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "boundary-creator",
+            "at": "2026-10-09T20:00:00.000Z",
+            "version": 1
+          }
+        ],
+        "change_request_status": null
       },
       "checks": [
         {
@@ -62,42 +251,145 @@
         }
       ],
       "passed": true,
-      "duration_ms": 10
+      "duration_ms": 5
     },
     {
-      "label": "Marca solicita alteração com motivo e prazo",
+      "label": "Marca define o mesmo dia civil no roteiro de limite",
       "method": "POST",
-      "path": "/scripts/9dac4308-e934-4b07-871d-efe9cea32fd3/change-requests",
+      "path": "/scripts/82713c36-30c7-4962-9c8e-9f158c2c8d70/change-requests",
       "request": {
-        "brand_id": "brand-evidence",
+        "brand_id": "boundary-brand",
         "expected_version": 1,
-        "reason": "Explique o benefício antes da oferta.",
-        "deadline": "2026-10-31"
+        "reason": "Teste de reenvio no último milissegundo.",
+        "deadline": "2026-10-09"
       },
       "http_status": 200,
       "response": {
-        "id": "9dac4308-e934-4b07-871d-efe9cea32fd3",
+        "id": "82713c36-30c7-4962-9c8e-9f158c2c8d70",
+        "creator_id": "boundary-creator",
+        "brand_id": "boundary-brand",
+        "time_zone": "America/Sao_Paulo",
+        "state": "changes_requested",
+        "current_version": 1,
+        "created_at": "2026-10-09T20:00:00.000Z",
+        "updated_at": "2026-10-09T20:00:00.000Z",
+        "approved_at": null,
+        "versions": [
+          {
+            "number": 1,
+            "content": "v1 do teste do limite.",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T20:00:00.000Z",
+            "change_request": {
+              "reason": "Teste de reenvio no último milissegundo.",
+              "deadline": "2026-10-09",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-10T02:59:59.999Z",
+              "expires_at": "2026-10-10T03:00:00.000Z",
+              "requested_at": "2026-10-09T20:00:00.000Z",
+              "requested_by": "boundary-brand"
+            },
+            "superseded_by": null,
+            "approved_at": null
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "boundary-creator",
+            "at": "2026-10-09T20:00:00.000Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "boundary-brand",
+            "at": "2026-10-09T20:00:00.000Z",
+            "version": 1,
+            "reason": "Teste de reenvio no último milissegundo.",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          }
+        ],
+        "change_request_status": "active"
+      },
+      "checks": [
+        {
+          "field": "state",
+          "expected": "changes_requested",
+          "actual": "changes_requested",
+          "passed": true
+        },
+        {
+          "field": "change_request_status",
+          "expected": "active",
+          "actual": "active",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 6
+    },
+    {
+      "label": "Fixture local: último milissegundo do dia ainda válido",
+      "method": "POST",
+      "path": "/__evidence_clock",
+      "request": {
+        "instant": "2026-10-10T02:59:59.999Z"
+      },
+      "http_status": 200,
+      "response": {
+        "evidence_only": true,
+        "instant": "2026-10-10T02:59:59.999Z"
+      },
+      "checks": [
+        {
+          "field": "instant",
+          "expected": "2026-10-10T02:59:59.999Z",
+          "actual": "2026-10-10T02:59:59.999Z",
+          "passed": true
+        },
+        {
+          "field": "evidence_only",
+          "expected": true,
+          "actual": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 6
+    },
+    {
+      "label": "Consulta mostra pedido ainda ativo",
+      "method": "GET",
+      "path": "/scripts/9bb8adc0-edd5-40bf-b14e-c37358a155fd",
+      "http_status": 200,
+      "response": {
+        "id": "9bb8adc0-edd5-40bf-b14e-c37358a155fd",
         "creator_id": "creator-evidence",
         "brand_id": "brand-evidence",
         "time_zone": "America/Sao_Paulo",
         "state": "changes_requested",
         "current_version": 1,
-        "created_at": "2026-10-09T19:37:34.884Z",
-        "updated_at": "2026-10-09T19:37:34.892Z",
+        "created_at": "2026-10-09T20:00:00.000Z",
+        "updated_at": "2026-10-09T20:00:00.000Z",
         "approved_at": null,
         "versions": [
           {
             "number": 1,
             "content": "Versão inicial do roteiro.",
             "state": "changes_requested",
-            "submitted_at": "2026-10-09T19:37:34.884Z",
+            "submitted_at": "2026-10-09T20:00:00.000Z",
             "change_request": {
               "reason": "Explique o benefício antes da oferta.",
-              "deadline": "2026-10-31",
+              "deadline": "2026-10-09",
               "time_zone": "America/Sao_Paulo",
-              "valid_until": "2026-11-01T02:59:59.999Z",
-              "expires_at": "2026-11-01T03:00:00.000Z",
-              "requested_at": "2026-10-09T19:37:34.892Z",
+              "valid_until": "2026-10-10T02:59:59.999Z",
+              "expires_at": "2026-10-10T03:00:00.000Z",
+              "requested_at": "2026-10-09T20:00:00.000Z",
               "requested_by": "brand-evidence"
             },
             "superseded_by": null,
@@ -110,7 +402,7 @@
             "type": "version_submitted",
             "actor_role": "creator",
             "actor_id": "creator-evidence",
-            "at": "2026-10-09T19:37:34.884Z",
+            "at": "2026-10-09T20:00:00.000Z",
             "version": 1
           },
           {
@@ -118,13 +410,14 @@
             "type": "changes_requested",
             "actor_role": "brand",
             "actor_id": "brand-evidence",
-            "at": "2026-10-09T19:37:34.892Z",
+            "at": "2026-10-09T20:00:00.000Z",
             "version": 1,
             "reason": "Explique o benefício antes da oferta.",
-            "deadline": "2026-10-31",
-            "expires_at": "2026-11-01T03:00:00.000Z"
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
           }
-        ]
+        ],
+        "change_request_status": "active"
       },
       "checks": [
         {
@@ -134,58 +427,95 @@
           "passed": true
         },
         {
-          "field": "versions.0.change_request.deadline",
-          "expected": "2026-10-31",
-          "actual": "2026-10-31",
+          "field": "change_request_status",
+          "expected": "active",
+          "actual": "active",
+          "passed": true
+        },
+        {
+          "field": "history.length",
+          "expected": 2,
+          "actual": 2,
           "passed": true
         }
       ],
       "passed": true,
-      "duration_ms": 6
+      "duration_ms": 4
     },
     {
-      "label": "Segunda versão preserva o conteúdo anterior",
+      "label": "Marca não pode sobrescrever o pedido ainda ativo",
       "method": "POST",
-      "path": "/scripts/9dac4308-e934-4b07-871d-efe9cea32fd3/versions",
+      "path": "/scripts/9bb8adc0-edd5-40bf-b14e-c37358a155fd/change-requests",
       "request": {
-        "creator_id": "creator-evidence",
+        "brand_id": "brand-evidence",
         "expected_version": 1,
-        "content": "Versão 2: benefício demonstrado antes da oferta."
+        "reason": "Tentativa antes do fim.",
+        "deadline": "2026-10-11"
+      },
+      "http_status": 409,
+      "response": {
+        "error": {
+          "code": "INVALID_STATE",
+          "message": "A marca só pode pedir alterações em uma versão aguardando revisão ou renovar um pedido expirado.",
+          "details": {
+            "current_state": "changes_requested"
+          }
+        }
+      },
+      "checks": [
+        {
+          "field": "error.code",
+          "expected": "INVALID_STATE",
+          "actual": "INVALID_STATE",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 5
+    },
+    {
+      "label": "Último milissegundo aceita o reenvio real no roteiro separado",
+      "method": "POST",
+      "path": "/scripts/82713c36-30c7-4962-9c8e-9f158c2c8d70/versions",
+      "request": {
+        "creator_id": "boundary-creator",
+        "expected_version": 1,
+        "content": "v2 aceita no limite exato."
       },
       "http_status": 201,
       "response": {
-        "id": "9dac4308-e934-4b07-871d-efe9cea32fd3",
-        "creator_id": "creator-evidence",
-        "brand_id": "brand-evidence",
+        "id": "82713c36-30c7-4962-9c8e-9f158c2c8d70",
+        "creator_id": "boundary-creator",
+        "brand_id": "boundary-brand",
         "time_zone": "America/Sao_Paulo",
         "state": "awaiting_review",
         "current_version": 2,
-        "created_at": "2026-10-09T19:37:34.884Z",
-        "updated_at": "2026-10-09T19:37:34.899Z",
+        "created_at": "2026-10-09T20:00:00.000Z",
+        "updated_at": "2026-10-10T02:59:59.999Z",
         "approved_at": null,
         "versions": [
           {
             "number": 1,
-            "content": "Versão inicial do roteiro.",
+            "content": "v1 do teste do limite.",
             "state": "changes_requested",
-            "submitted_at": "2026-10-09T19:37:34.884Z",
+            "submitted_at": "2026-10-09T20:00:00.000Z",
             "change_request": {
-              "reason": "Explique o benefício antes da oferta.",
-              "deadline": "2026-10-31",
+              "reason": "Teste de reenvio no último milissegundo.",
+              "deadline": "2026-10-09",
               "time_zone": "America/Sao_Paulo",
-              "valid_until": "2026-11-01T02:59:59.999Z",
-              "expires_at": "2026-11-01T03:00:00.000Z",
-              "requested_at": "2026-10-09T19:37:34.892Z",
-              "requested_by": "brand-evidence"
+              "valid_until": "2026-10-10T02:59:59.999Z",
+              "expires_at": "2026-10-10T03:00:00.000Z",
+              "requested_at": "2026-10-09T20:00:00.000Z",
+              "requested_by": "boundary-brand"
             },
             "superseded_by": 2,
             "approved_at": null
           },
           {
             "number": 2,
-            "content": "Versão 2: benefício demonstrado antes da oferta.",
+            "content": "v2 aceita no limite exato.",
             "state": "awaiting_review",
-            "submitted_at": "2026-10-09T19:37:34.899Z",
+            "submitted_at": "2026-10-10T02:59:59.999Z",
             "change_request": null,
             "superseded_by": null,
             "approved_at": null
@@ -196,31 +526,32 @@
             "sequence": 1,
             "type": "version_submitted",
             "actor_role": "creator",
-            "actor_id": "creator-evidence",
-            "at": "2026-10-09T19:37:34.884Z",
+            "actor_id": "boundary-creator",
+            "at": "2026-10-09T20:00:00.000Z",
             "version": 1
           },
           {
             "sequence": 2,
             "type": "changes_requested",
             "actor_role": "brand",
-            "actor_id": "brand-evidence",
-            "at": "2026-10-09T19:37:34.892Z",
+            "actor_id": "boundary-brand",
+            "at": "2026-10-09T20:00:00.000Z",
             "version": 1,
-            "reason": "Explique o benefício antes da oferta.",
-            "deadline": "2026-10-31",
-            "expires_at": "2026-11-01T03:00:00.000Z"
+            "reason": "Teste de reenvio no último milissegundo.",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
           },
           {
             "sequence": 3,
             "type": "version_submitted",
             "actor_role": "creator",
-            "actor_id": "creator-evidence",
-            "at": "2026-10-09T19:37:34.899Z",
+            "actor_id": "boundary-creator",
+            "at": "2026-10-10T02:59:59.999Z",
             "version": 2,
             "replaces_version": 1
           }
-        ]
+        ],
+        "change_request_status": null
       },
       "checks": [
         {
@@ -236,9 +567,15 @@
           "passed": true
         },
         {
-          "field": "versions.length",
-          "expected": 2,
-          "actual": 2,
+          "field": "versions.1.submitted_at",
+          "expected": "2026-10-10T02:59:59.999Z",
+          "actual": "2026-10-10T02:59:59.999Z",
+          "passed": true
+        },
+        {
+          "field": "change_request_status",
+          "expected": null,
+          "actual": null,
           "passed": true
         }
       ],
@@ -246,50 +583,66 @@
       "duration_ms": 6
     },
     {
-      "label": "Marca aprova a versão atual e encerra revisão",
+      "label": "Fixture local: primeiro milissegundo do dia seguinte",
       "method": "POST",
-      "path": "/scripts/9dac4308-e934-4b07-871d-efe9cea32fd3/approval",
+      "path": "/__evidence_clock",
       "request": {
-        "brand_id": "brand-evidence",
-        "expected_version": 2
+        "instant": "2026-10-10T03:00:00.000Z"
       },
       "http_status": 200,
       "response": {
-        "id": "9dac4308-e934-4b07-871d-efe9cea32fd3",
+        "evidence_only": true,
+        "instant": "2026-10-10T03:00:00.000Z"
+      },
+      "checks": [
+        {
+          "field": "instant",
+          "expected": "2026-10-10T03:00:00.000Z",
+          "actual": "2026-10-10T03:00:00.000Z",
+          "passed": true
+        },
+        {
+          "field": "evidence_only",
+          "expected": true,
+          "actual": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 4
+    },
+    {
+      "label": "Consulta explicita vencimento sem apagar pedido/histórico",
+      "method": "GET",
+      "path": "/scripts/9bb8adc0-edd5-40bf-b14e-c37358a155fd",
+      "http_status": 200,
+      "response": {
+        "id": "9bb8adc0-edd5-40bf-b14e-c37358a155fd",
         "creator_id": "creator-evidence",
         "brand_id": "brand-evidence",
         "time_zone": "America/Sao_Paulo",
-        "state": "approved",
-        "current_version": 2,
-        "created_at": "2026-10-09T19:37:34.884Z",
-        "updated_at": "2026-10-09T19:37:34.904Z",
-        "approved_at": "2026-10-09T19:37:34.904Z",
+        "state": "changes_requested",
+        "current_version": 1,
+        "created_at": "2026-10-09T20:00:00.000Z",
+        "updated_at": "2026-10-09T20:00:00.000Z",
+        "approved_at": null,
         "versions": [
           {
             "number": 1,
             "content": "Versão inicial do roteiro.",
             "state": "changes_requested",
-            "submitted_at": "2026-10-09T19:37:34.884Z",
+            "submitted_at": "2026-10-09T20:00:00.000Z",
             "change_request": {
               "reason": "Explique o benefício antes da oferta.",
-              "deadline": "2026-10-31",
+              "deadline": "2026-10-09",
               "time_zone": "America/Sao_Paulo",
-              "valid_until": "2026-11-01T02:59:59.999Z",
-              "expires_at": "2026-11-01T03:00:00.000Z",
-              "requested_at": "2026-10-09T19:37:34.892Z",
+              "valid_until": "2026-10-10T02:59:59.999Z",
+              "expires_at": "2026-10-10T03:00:00.000Z",
+              "requested_at": "2026-10-09T20:00:00.000Z",
               "requested_by": "brand-evidence"
             },
-            "superseded_by": 2,
-            "approved_at": null
-          },
-          {
-            "number": 2,
-            "content": "Versão 2: benefício demonstrado antes da oferta.",
-            "state": "approved",
-            "submitted_at": "2026-10-09T19:37:34.899Z",
-            "change_request": null,
             "superseded_by": null,
-            "approved_at": "2026-10-09T19:37:34.904Z"
+            "approved_at": null
           }
         ],
         "history": [
@@ -298,7 +651,7 @@
             "type": "version_submitted",
             "actor_role": "creator",
             "actor_id": "creator-evidence",
-            "at": "2026-10-09T19:37:34.884Z",
+            "at": "2026-10-09T20:00:00.000Z",
             "version": 1
           },
           {
@@ -306,30 +659,526 @@
             "type": "changes_requested",
             "actor_role": "brand",
             "actor_id": "brand-evidence",
-            "at": "2026-10-09T19:37:34.892Z",
+            "at": "2026-10-09T20:00:00.000Z",
             "version": 1,
             "reason": "Explique o benefício antes da oferta.",
-            "deadline": "2026-10-31",
-            "expires_at": "2026-11-01T03:00:00.000Z"
-          },
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          }
+        ],
+        "change_request_status": "expired"
+      },
+      "checks": [
+        {
+          "field": "state",
+          "expected": "changes_requested",
+          "actual": "changes_requested",
+          "passed": true
+        },
+        {
+          "field": "change_request_status",
+          "expected": "expired",
+          "actual": "expired",
+          "passed": true
+        },
+        {
+          "field": "history.length",
+          "expected": 2,
+          "actual": 2,
+          "passed": true
+        },
+        {
+          "field": "versions.0.content",
+          "expected": "Versão inicial do roteiro.",
+          "actual": "Versão inicial do roteiro.",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 4
+    },
+    {
+      "label": "Criador não reenvia com o pedido vencido",
+      "method": "POST",
+      "path": "/scripts/9bb8adc0-edd5-40bf-b14e-c37358a155fd/versions",
+      "request": {
+        "creator_id": "creator-evidence",
+        "expected_version": 1,
+        "content": "Reenvio fora do prazo."
+      },
+      "http_status": 409,
+      "response": {
+        "error": {
+          "code": "DEADLINE_EXPIRED",
+          "message": "O prazo para reenviar terminou em America/Sao_Paulo.",
+          "details": {
+            "deadline": "2026-10-09"
+          }
+        }
+      },
+      "checks": [
+        {
+          "field": "error.code",
+          "expected": "DEADLINE_EXPIRED",
+          "actual": "DEADLINE_EXPIRED",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 3
+    },
+    {
+      "label": "Renovação com prazo já encerrado continua recusada",
+      "method": "POST",
+      "path": "/scripts/9bb8adc0-edd5-40bf-b14e-c37358a155fd/change-requests",
+      "request": {
+        "brand_id": "brand-evidence",
+        "expected_version": 1,
+        "reason": "Prazo inválido.",
+        "deadline": "2026-10-09"
+      },
+      "http_status": 422,
+      "response": {
+        "error": {
+          "code": "DEADLINE_EXPIRED",
+          "message": "O dia do prazo já terminou em America/Sao_Paulo.",
+          "details": {
+            "deadline": "2026-10-09"
+          }
+        }
+      },
+      "checks": [
+        {
+          "field": "error.code",
+          "expected": "DEADLINE_EXPIRED",
+          "actual": "DEADLINE_EXPIRED",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 4
+    },
+    {
+      "label": "Outra marca não pode renovar o pedido",
+      "method": "POST",
+      "path": "/scripts/9bb8adc0-edd5-40bf-b14e-c37358a155fd/change-requests",
+      "request": {
+        "brand_id": "other-brand",
+        "expected_version": 1,
+        "reason": "Ator errado.",
+        "deadline": "2026-10-11"
+      },
+      "http_status": 403,
+      "response": {
+        "error": {
+          "code": "WRONG_ACTOR",
+          "message": "Somente o identificador da marca deste roteiro pode executar esta ação."
+        }
+      },
+      "checks": [
+        {
+          "field": "error.code",
+          "expected": "WRONG_ACTOR",
+          "actual": "WRONG_ACTOR",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 3
+    },
+    {
+      "label": "Renovação com versão obsoleta continua recusada",
+      "method": "POST",
+      "path": "/scripts/9bb8adc0-edd5-40bf-b14e-c37358a155fd/change-requests",
+      "request": {
+        "brand_id": "brand-evidence",
+        "expected_version": 2,
+        "reason": "Versão errada.",
+        "deadline": "2026-10-11"
+      },
+      "http_status": 409,
+      "response": {
+        "error": {
+          "code": "STALE_VERSION",
+          "message": "A ação deve se referir à versão atual.",
+          "details": {
+            "current_version": 1
+          }
+        }
+      },
+      "checks": [
+        {
+          "field": "error.code",
+          "expected": "STALE_VERSION",
+          "actual": "STALE_VERSION",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 4
+    },
+    {
+      "label": "Mesma marca renova após vencer; pedido original fica no histórico",
+      "method": "POST",
+      "path": "/scripts/9bb8adc0-edd5-40bf-b14e-c37358a155fd/change-requests",
+      "request": {
+        "brand_id": "brand-evidence",
+        "expected_version": 1,
+        "reason": "Novo pedido: demonstre o benefício.",
+        "deadline": "2026-10-11"
+      },
+      "http_status": 200,
+      "response": {
+        "id": "9bb8adc0-edd5-40bf-b14e-c37358a155fd",
+        "creator_id": "creator-evidence",
+        "brand_id": "brand-evidence",
+        "time_zone": "America/Sao_Paulo",
+        "state": "changes_requested",
+        "current_version": 1,
+        "created_at": "2026-10-09T20:00:00.000Z",
+        "updated_at": "2026-10-10T03:00:00.000Z",
+        "approved_at": null,
+        "versions": [
           {
-            "sequence": 3,
+            "number": 1,
+            "content": "Versão inicial do roteiro.",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T20:00:00.000Z",
+            "change_request": {
+              "reason": "Novo pedido: demonstre o benefício.",
+              "deadline": "2026-10-11",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-12T02:59:59.999Z",
+              "expires_at": "2026-10-12T03:00:00.000Z",
+              "requested_at": "2026-10-10T03:00:00.000Z",
+              "requested_by": "brand-evidence"
+            },
+            "superseded_by": null,
+            "approved_at": null
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
             "type": "version_submitted",
             "actor_role": "creator",
             "actor_id": "creator-evidence",
-            "at": "2026-10-09T19:37:34.899Z",
+            "at": "2026-10-09T20:00:00.000Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand-evidence",
+            "at": "2026-10-09T20:00:00.000Z",
+            "version": 1,
+            "reason": "Explique o benefício antes da oferta.",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          },
+          {
+            "sequence": 3,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand-evidence",
+            "at": "2026-10-10T03:00:00.000Z",
+            "version": 1,
+            "reason": "Novo pedido: demonstre o benefício.",
+            "deadline": "2026-10-11",
+            "expires_at": "2026-10-12T03:00:00.000Z"
+          }
+        ],
+        "change_request_status": "active"
+      },
+      "checks": [
+        {
+          "field": "state",
+          "expected": "changes_requested",
+          "actual": "changes_requested",
+          "passed": true
+        },
+        {
+          "field": "change_request_status",
+          "expected": "active",
+          "actual": "active",
+          "passed": true
+        },
+        {
+          "field": "current_version",
+          "expected": 1,
+          "actual": 1,
+          "passed": true
+        },
+        {
+          "field": "versions.length",
+          "expected": 1,
+          "actual": 1,
+          "passed": true
+        },
+        {
+          "field": "history.length",
+          "expected": 3,
+          "actual": 3,
+          "passed": true
+        },
+        {
+          "field": "history.1.reason",
+          "expected": "Explique o benefício antes da oferta.",
+          "actual": "Explique o benefício antes da oferta.",
+          "passed": true
+        },
+        {
+          "field": "history.1.deadline",
+          "expected": "2026-10-09",
+          "actual": "2026-10-09",
+          "passed": true
+        },
+        {
+          "field": "versions.0.change_request.deadline",
+          "expected": "2026-10-11",
+          "actual": "2026-10-11",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 3
+    },
+    {
+      "label": "Criador reenvia v2 com pedido renovado; v1 continua guardada",
+      "method": "POST",
+      "path": "/scripts/9bb8adc0-edd5-40bf-b14e-c37358a155fd/versions",
+      "request": {
+        "creator_id": "creator-evidence",
+        "expected_version": 1,
+        "content": "Versão2: benefício demonstrado antes da oferta."
+      },
+      "http_status": 201,
+      "response": {
+        "id": "9bb8adc0-edd5-40bf-b14e-c37358a155fd",
+        "creator_id": "creator-evidence",
+        "brand_id": "brand-evidence",
+        "time_zone": "America/Sao_Paulo",
+        "state": "awaiting_review",
+        "current_version": 2,
+        "created_at": "2026-10-09T20:00:00.000Z",
+        "updated_at": "2026-10-10T03:00:00.000Z",
+        "approved_at": null,
+        "versions": [
+          {
+            "number": 1,
+            "content": "Versão inicial do roteiro.",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T20:00:00.000Z",
+            "change_request": {
+              "reason": "Novo pedido: demonstre o benefício.",
+              "deadline": "2026-10-11",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-12T02:59:59.999Z",
+              "expires_at": "2026-10-12T03:00:00.000Z",
+              "requested_at": "2026-10-10T03:00:00.000Z",
+              "requested_by": "brand-evidence"
+            },
+            "superseded_by": 2,
+            "approved_at": null
+          },
+          {
+            "number": 2,
+            "content": "Versão2: benefício demonstrado antes da oferta.",
+            "state": "awaiting_review",
+            "submitted_at": "2026-10-10T03:00:00.000Z",
+            "change_request": null,
+            "superseded_by": null,
+            "approved_at": null
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "creator-evidence",
+            "at": "2026-10-09T20:00:00.000Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand-evidence",
+            "at": "2026-10-09T20:00:00.000Z",
+            "version": 1,
+            "reason": "Explique o benefício antes da oferta.",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          },
+          {
+            "sequence": 3,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand-evidence",
+            "at": "2026-10-10T03:00:00.000Z",
+            "version": 1,
+            "reason": "Novo pedido: demonstre o benefício.",
+            "deadline": "2026-10-11",
+            "expires_at": "2026-10-12T03:00:00.000Z"
+          },
+          {
+            "sequence": 4,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "creator-evidence",
+            "at": "2026-10-10T03:00:00.000Z",
+            "version": 2,
+            "replaces_version": 1
+          }
+        ],
+        "change_request_status": null
+      },
+      "checks": [
+        {
+          "field": "state",
+          "expected": "awaiting_review",
+          "actual": "awaiting_review",
+          "passed": true
+        },
+        {
+          "field": "change_request_status",
+          "expected": null,
+          "actual": null,
+          "passed": true
+        },
+        {
+          "field": "current_version",
+          "expected": 2,
+          "actual": 2,
+          "passed": true
+        },
+        {
+          "field": "versions.length",
+          "expected": 2,
+          "actual": 2,
+          "passed": true
+        },
+        {
+          "field": "history.length",
+          "expected": 4,
+          "actual": 4,
+          "passed": true
+        },
+        {
+          "field": "versions.0.content",
+          "expected": "Versão inicial do roteiro.",
+          "actual": "Versão inicial do roteiro.",
+          "passed": true
+        },
+        {
+          "field": "versions.0.superseded_by",
+          "expected": 2,
+          "actual": 2,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 3
+    },
+    {
+      "label": "Marca aprova a versão atual e encerra revisão",
+      "method": "POST",
+      "path": "/scripts/9bb8adc0-edd5-40bf-b14e-c37358a155fd/approval",
+      "request": {
+        "brand_id": "brand-evidence",
+        "expected_version": 2
+      },
+      "http_status": 200,
+      "response": {
+        "id": "9bb8adc0-edd5-40bf-b14e-c37358a155fd",
+        "creator_id": "creator-evidence",
+        "brand_id": "brand-evidence",
+        "time_zone": "America/Sao_Paulo",
+        "state": "approved",
+        "current_version": 2,
+        "created_at": "2026-10-09T20:00:00.000Z",
+        "updated_at": "2026-10-10T03:00:00.000Z",
+        "approved_at": "2026-10-10T03:00:00.000Z",
+        "versions": [
+          {
+            "number": 1,
+            "content": "Versão inicial do roteiro.",
+            "state": "changes_requested",
+            "submitted_at": "2026-10-09T20:00:00.000Z",
+            "change_request": {
+              "reason": "Novo pedido: demonstre o benefício.",
+              "deadline": "2026-10-11",
+              "time_zone": "America/Sao_Paulo",
+              "valid_until": "2026-10-12T02:59:59.999Z",
+              "expires_at": "2026-10-12T03:00:00.000Z",
+              "requested_at": "2026-10-10T03:00:00.000Z",
+              "requested_by": "brand-evidence"
+            },
+            "superseded_by": 2,
+            "approved_at": null
+          },
+          {
+            "number": 2,
+            "content": "Versão2: benefício demonstrado antes da oferta.",
+            "state": "approved",
+            "submitted_at": "2026-10-10T03:00:00.000Z",
+            "change_request": null,
+            "superseded_by": null,
+            "approved_at": "2026-10-10T03:00:00.000Z"
+          }
+        ],
+        "history": [
+          {
+            "sequence": 1,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "creator-evidence",
+            "at": "2026-10-09T20:00:00.000Z",
+            "version": 1
+          },
+          {
+            "sequence": 2,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand-evidence",
+            "at": "2026-10-09T20:00:00.000Z",
+            "version": 1,
+            "reason": "Explique o benefício antes da oferta.",
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
+          },
+          {
+            "sequence": 3,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand-evidence",
+            "at": "2026-10-10T03:00:00.000Z",
+            "version": 1,
+            "reason": "Novo pedido: demonstre o benefício.",
+            "deadline": "2026-10-11",
+            "expires_at": "2026-10-12T03:00:00.000Z"
+          },
+          {
+            "sequence": 4,
+            "type": "version_submitted",
+            "actor_role": "creator",
+            "actor_id": "creator-evidence",
+            "at": "2026-10-10T03:00:00.000Z",
             "version": 2,
             "replaces_version": 1
           },
           {
-            "sequence": 4,
+            "sequence": 5,
             "type": "approved",
             "actor_role": "brand",
             "actor_id": "brand-evidence",
-            "at": "2026-10-09T19:37:34.904Z",
+            "at": "2026-10-10T03:00:00.000Z",
             "version": 2
           }
-        ]
+        ],
+        "change_request_status": null
       },
       "checks": [
         {
@@ -337,15 +1186,27 @@
           "expected": "approved",
           "actual": "approved",
           "passed": true
+        },
+        {
+          "field": "change_request_status",
+          "expected": null,
+          "actual": null,
+          "passed": true
+        },
+        {
+          "field": "history.length",
+          "expected": 5,
+          "actual": 5,
+          "passed": true
         }
       ],
       "passed": true,
-      "duration_ms": 6
+      "duration_ms": 3
     },
     {
-      "label": "Nova versão após aprovação é recusada",
+      "label": "Nova versão depois da aprovação continua recusada",
       "method": "POST",
-      "path": "/scripts/9dac4308-e934-4b07-871d-efe9cea32fd3/versions",
+      "path": "/scripts/9bb8adc0-edd5-40bf-b14e-c37358a155fd/versions",
       "request": {
         "creator_id": "creator-evidence",
         "expected_version": 2,
@@ -367,36 +1228,64 @@
         }
       ],
       "passed": true,
-      "duration_ms": 7
+      "duration_ms": 3
     },
     {
-      "label": "Consulta mantém duas versões e quatro eventos",
+      "label": "Pedido de alteração não reabre aprovação terminal",
+      "method": "POST",
+      "path": "/scripts/9bb8adc0-edd5-40bf-b14e-c37358a155fd/change-requests",
+      "request": {
+        "brand_id": "brand-evidence",
+        "expected_version": 2,
+        "reason": "Reabertura inválida.",
+        "deadline": "2026-10-11"
+      },
+      "http_status": 409,
+      "response": {
+        "error": {
+          "code": "REVIEW_CLOSED",
+          "message": "A revisão foi aprovada e não pode ser reaberta."
+        }
+      },
+      "checks": [
+        {
+          "field": "error.code",
+          "expected": "REVIEW_CLOSED",
+          "actual": "REVIEW_CLOSED",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "duration_ms": 3
+    },
+    {
+      "label": "Agregado final conserva duas versões e cinco eventos",
       "method": "GET",
-      "path": "/scripts/9dac4308-e934-4b07-871d-efe9cea32fd3",
+      "path": "/scripts/9bb8adc0-edd5-40bf-b14e-c37358a155fd",
       "http_status": 200,
       "response": {
-        "id": "9dac4308-e934-4b07-871d-efe9cea32fd3",
+        "id": "9bb8adc0-edd5-40bf-b14e-c37358a155fd",
         "creator_id": "creator-evidence",
         "brand_id": "brand-evidence",
         "time_zone": "America/Sao_Paulo",
         "state": "approved",
         "current_version": 2,
-        "created_at": "2026-10-09T19:37:34.884Z",
-        "updated_at": "2026-10-09T19:37:34.904Z",
-        "approved_at": "2026-10-09T19:37:34.904Z",
+        "created_at": "2026-10-09T20:00:00.000Z",
+        "updated_at": "2026-10-10T03:00:00.000Z",
+        "approved_at": "2026-10-10T03:00:00.000Z",
         "versions": [
           {
             "number": 1,
             "content": "Versão inicial do roteiro.",
             "state": "changes_requested",
-            "submitted_at": "2026-10-09T19:37:34.884Z",
+            "submitted_at": "2026-10-09T20:00:00.000Z",
             "change_request": {
-              "reason": "Explique o benefício antes da oferta.",
-              "deadline": "2026-10-31",
+              "reason": "Novo pedido: demonstre o benefício.",
+              "deadline": "2026-10-11",
               "time_zone": "America/Sao_Paulo",
-              "valid_until": "2026-11-01T02:59:59.999Z",
-              "expires_at": "2026-11-01T03:00:00.000Z",
-              "requested_at": "2026-10-09T19:37:34.892Z",
+              "valid_until": "2026-10-12T02:59:59.999Z",
+              "expires_at": "2026-10-12T03:00:00.000Z",
+              "requested_at": "2026-10-10T03:00:00.000Z",
               "requested_by": "brand-evidence"
             },
             "superseded_by": 2,
@@ -404,12 +1293,12 @@
           },
           {
             "number": 2,
-            "content": "Versão 2: benefício demonstrado antes da oferta.",
+            "content": "Versão2: benefício demonstrado antes da oferta.",
             "state": "approved",
-            "submitted_at": "2026-10-09T19:37:34.899Z",
+            "submitted_at": "2026-10-10T03:00:00.000Z",
             "change_request": null,
             "superseded_by": null,
-            "approved_at": "2026-10-09T19:37:34.904Z"
+            "approved_at": "2026-10-10T03:00:00.000Z"
           }
         ],
         "history": [
@@ -418,7 +1307,7 @@
             "type": "version_submitted",
             "actor_role": "creator",
             "actor_id": "creator-evidence",
-            "at": "2026-10-09T19:37:34.884Z",
+            "at": "2026-10-09T20:00:00.000Z",
             "version": 1
           },
           {
@@ -426,30 +1315,42 @@
             "type": "changes_requested",
             "actor_role": "brand",
             "actor_id": "brand-evidence",
-            "at": "2026-10-09T19:37:34.892Z",
+            "at": "2026-10-09T20:00:00.000Z",
             "version": 1,
             "reason": "Explique o benefício antes da oferta.",
-            "deadline": "2026-10-31",
-            "expires_at": "2026-11-01T03:00:00.000Z"
+            "deadline": "2026-10-09",
+            "expires_at": "2026-10-10T03:00:00.000Z"
           },
           {
             "sequence": 3,
+            "type": "changes_requested",
+            "actor_role": "brand",
+            "actor_id": "brand-evidence",
+            "at": "2026-10-10T03:00:00.000Z",
+            "version": 1,
+            "reason": "Novo pedido: demonstre o benefício.",
+            "deadline": "2026-10-11",
+            "expires_at": "2026-10-12T03:00:00.000Z"
+          },
+          {
+            "sequence": 4,
             "type": "version_submitted",
             "actor_role": "creator",
             "actor_id": "creator-evidence",
-            "at": "2026-10-09T19:37:34.899Z",
+            "at": "2026-10-10T03:00:00.000Z",
             "version": 2,
             "replaces_version": 1
           },
           {
-            "sequence": 4,
+            "sequence": 5,
             "type": "approved",
             "actor_role": "brand",
             "actor_id": "brand-evidence",
-            "at": "2026-10-09T19:37:34.904Z",
+            "at": "2026-10-10T03:00:00.000Z",
             "version": 2
           }
-        ]
+        ],
+        "change_request_status": null
       },
       "checks": [
         {
@@ -466,8 +1367,20 @@
         },
         {
           "field": "history.length",
-          "expected": 4,
-          "actual": 4,
+          "expected": 5,
+          "actual": 5,
+          "passed": true
+        },
+        {
+          "field": "history.1.deadline",
+          "expected": "2026-10-09",
+          "actual": "2026-10-09",
+          "passed": true
+        },
+        {
+          "field": "history.2.deadline",
+          "expected": "2026-10-11",
+          "actual": "2026-10-11",
           "passed": true
         },
         {
@@ -478,7 +1391,7 @@
         }
       ],
       "passed": true,
-      "duration_ms": 7
+      "duration_ms": 3
     }
   ]
 }

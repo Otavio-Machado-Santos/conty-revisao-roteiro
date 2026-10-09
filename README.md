@@ -67,6 +67,6 @@ O domínio não depende de HTTP. O processo grava snapshots JSON por arquivo tem
 
 ## Uso de IA e revisão
 
-Codex produziu código, testes e documentação. Dois agentes Codex independentes do implementador revisaram o commit anterior `f7212f0ded7caa36370518e6cdcaa8780556f380`; os pareceres históricos estão em `docs/reviews/`. A revisão externa posterior de Claude Opus 5.5 identificou o travamento depois de um pedido expirado. Codex implementou esta correção e as regressões, motivado por esse achado. **A nova revisão independente sobre o SHA desta correção ainda está pendente**, assim como o novo checkout isolado e a nova captura HTTP pelo coordenador. As aprovações e capturas anteriores não avaliam esta correção. Não foi realizada revisão humana do código. A validação usa dados sintéticos e ambiente local; limites e interpretações do contrato estão documentados.
+Implementação, testes e documentação: Codex. Dois agentes Codex independentes do implementador revisaram o commit `db12564279a7ab18d3c7e99759f24c69a6a78227` e liberaram a entrega após testes e sondagens próprias. Os pareceres completos estão em `docs/reviews/`. O coordenador conferiu a instalação e os testes em checkout isolado e registrou o fluxo HTTP real. Não foi realizada revisão humana do código. A validação usa dados sintéticos e ambiente local; limites e interpretações do contrato estão documentados.
 
 [Verificação e captura anteriores, preservadas como registro histórico](docs/verificacao-final.md).

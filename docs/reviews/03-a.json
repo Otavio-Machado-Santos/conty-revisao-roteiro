@@ -1,121 +1,137 @@
 {
   "challenge": 3,
   "title": "Revisão de roteiro",
-  "reviewed_sha": "f7212f0ded7caa36370518e6cdcaa8780556f380",
-  "base_sha": "8554cf137ded9626066defd7d365f9eab6bc1aab",
-  "reviewer": "/root/implementar_descoberta — revisão independente A, Codex; não implementou este desafio",
-  "runtime": "Node v22.23.3",
+  "reviewed_sha": "db12564279a7ab18d3c7e99759f24c69a6a78227",
+  "base_sha": "c5301a8d729b2c3a23aa3f4f29248de4035ccdd3",
+  "previous_code_sha": "f7212f0ded7caa36370518e6cdcaa8780556f380",
+  "reviewer": "/root/implementar_repasses — Codex, revisão A independente; não implementou nem descobriu o achado da entrega 3",
   "repository": "/Users/flowbix_redfinger/XiaomiMiMoProjects/conty challenge/projetos/conty-revisao-roteiro",
-  "scope": "Revisão delta somente leitura da validação de campos desconhecidos e das regressões novas. Estados, prazo e histórico reconferidos com o probe anterior preservado e uma cópia delta que exige HTTP422 e amplia a checagem para quatro escritas. Nenhum arquivo do repositório alterado ou publicado.",
-  "commands": [
-    {
-      "command": "git rev-parse HEAD",
-      "exit_code": 0,
-      "result": "f7212f0ded7caa36370518e6cdcaa8780556f380, confirmado antes e depois"
-    },
-    {
-      "command": "git diff 1781eb0d47cf6b57b298ea37b811567f4982ac84...f7212f0ded7caa36370518e6cdcaa8780556f380",
-      "exit_code": 0,
-      "result": "Código de produção muda somente if(extra) para if(extra !== undefined). Regressoes adicionais cobrem as quatro escritas de domínio e criação HTTP; demais mudanças são saídas reais de testes."
-    },
-    {
-      "command": "node /Users/flowbix_redfinger/XiaomiMiMoProjects/conty challenge/revisoes/03-a-delta-adversarial.mjs",
-      "exit_code": 0,
-      "result": "Os seis grupos passaram: 49 datas civis e duas bordas, 20 ciclos/21 versões/42 eventos, motivos e prazos inválidos, reinício expirado, concorrência e 12 rejeições HTTP nas quatro escritas. Testadas chave vazia isolada, chave vazia antes de outro desconhecido e outro desconhecido antes da chave vazia; todas422 e sem mutação.",
-      "output_file": "revisoes/03-a-delta-probe.txt",
-      "structured_output": "revisoes/03-a-delta-adversarial-results.json"
-    },
+  "runtime": "Node v22.23.3",
+  "archive": "/var/folders/1h/dnd2dd992cq41yhypgy46_bc0000gn/T/conty-review-03-a-expiry-8zmn2ozt",
+  "previous_review": "revisoes/03-a-f721-anterior.json",
+  "spec_sources": [
+    "docs/enunciado.txt",
+    "revisoes/claude-opus55/parecer-subagente-03.json",
+    "README.md"
+  ],
+  "scope": "Delta da renovação de pedido expirado, projeção de status, histórico e compatibilidade. Leitura do enunciado/README/todos src/testes; execução em git archive, sem edição do código, push ou Conty. Relatórios 09 preservados.",
+  "commands_results": [
     {
       "command": "npm test",
+      "where": "git archive do SHA fixo, sem dependências",
       "exit_code": 0,
-      "result": "23 testes,23 passaram,0 falharam; duração reportada216.167583 ms",
-      "output_file": "revisoes/03-a-delta-tests.txt"
+      "result": "33 testes passaram, 0 falharam; 23 originais continuam presentes e 10 regressões novas.",
+      "evidence": "revisoes/support/03-a-renewal-tests.txt"
     },
     {
-      "command": "node --check src/review.js; node --check test/review.test.js; node --check test/http.test.js",
+      "command": "node revisoes/support/03-a-renewal-probe.mjs <archive> <output>",
       "exit_code": 0,
-      "result": "Todos os três arquivos modificados passam, nenhum diagnóstico"
+      "result": {
+        "passed": true,
+        "boundary_cases": 3,
+        "domain_error_paths": 25,
+        "http_requests": 14,
+        "persistent_bytes_mtime_and_save_count_preserved_on_rejections": true,
+        "final_versions": 2,
+        "final_history_events": 6
+      },
+      "evidence": "revisoes/support/03-a-renewal-probes.json"
     },
     {
-      "command": "git diff 1781eb0d47cf6b57b298ea37b811567f4982ac84...f7212f0ded7caa36370518e6cdcaa8780556f380 --check",
+      "command": "node --check src/review.js; node --check test/review.test.js; node --check test/renewal.test.js",
       "exit_code": 0,
-      "result": "Nenhum erro de whitespace"
+      "result": "Três arquivos modificados passam sem diagnóstico."
     },
     {
-      "command": "git diff entre os SHAs para enunciado,README,deadline,server,store,errors e package.json",
+      "command": "git diff c5301a8..db12564 --check; git diff --exit-code para contrato/package/prazo/store/HTTP/start/errors/testes imutáveis/demo; hashes/nomes de testes/bytes do archive",
       "exit_code": 0,
-      "result": "Vazio: contrato,API,prazo,persistência e documentação preservados"
-    },
-    {
-      "command": "git status --porcelain",
-      "exit_code": 0,
-      "result": "Vazio antes e depois; nenhuma alteração do revisor"
+      "result": "11 arquivos imutáveis; 13 nomes de testes de domínio preservados; todos os arquivos rastreados da cópia iguais ao commit após a revisão.",
+      "evidence": "revisoes/support/03-a-renewal-integrity.json"
     }
   ],
   "contract_validation": [
     {
-      "requirement": "Versões com estado explícito e fluxo compreensível",
+      "requirement": "Pedido vencido deve ter saída explícita e documentada",
       "result": "pass",
-      "evidence": "create → awaiting_review; requestChanges → changes_requested; submitVersion → awaiting_review; approve → approved. Respostas incluem state, current_version, versões e histórico; transições inválidas são recusadas sem mutar o agregado."
+      "evidence": "GET retorna changes_requested/expired sem gravação. Mesma marca e mesma versão renovam na rota existente com motivo/prazo válidos; segue para reenvio e aprovação no mesmo roteiro."
     },
     {
-      "requirement": "Alteração exige motivo e prazo; prazo passado não vale",
+      "requirement": "Último ms do prazo vale; primeiro instante seguinte expirou",
       "result": "pass",
-      "evidence": "Probes independentes com motivo ausente/nulo/vazio/branco/número/array/objeto e prazo ausente/nulo/impossível/formato incorreto ou dia passado foram recusados. Histórico e versão foram comparados integralmente antes/depois."
+      "evidence": "Sonda própria em 2026-10-09, 2026-12-31 e 2018-11-04 com horário de verão: active e reenvio permitido no último ms; renovação recusada enquanto ativo; expired e renovação permitida no primeiro ms. Inclui UTC já no dia seguinte."
     },
     {
-      "requirement": "Último instante civil de São Paulo vale; primeiro do dia seguinte não",
+      "requirement": "Pedido ativo não pode ser sobrescrito; ator/expected_version/motivo/prazo válidos",
       "result": "pass",
-      "evidence": "49 datas entre 2000 e 2030, incluindo bissexto, virada do ano e períodos históricos de horário de verão. Comparação independente com calendário civil de America/Sao_Paulo confirma que valid_until pertence ao dia e expires_at já pertence ao seguinte, separados por 1 ms. Pedido e reenvio passam no último instante; novos pedidos e reenvios tardios falham no seguinte sem mutação."
+      "evidence": "25 rejeições de domínio cobrindo pedido ativo, envio tardio, marca/criador incorretos, versão obsoleta/string/ausente, motivo vazio/nulo/ausente, prazo passado/inexistente/ausente, campo extra e aprovação pendente/terminal. Registro, bytes, mtime e contador de saves permanecem iguais."
     },
     {
-      "requirement": "Aprovação é terminal",
+      "requirement": "Renovar preserva versões e pedidos anteriores",
       "result": "pass",
-      "evidence": "Após 20 ciclos, aprovação da versão 21 bloqueia nova versão, novo pedido e segunda aprovação com REVIEW_CLOSED. Snapshot inteiro permanece idêntico. Também confirmado por HTTP para novo pedido após aprovação."
+      "evidence": "Três pedidos para a versão 1 conservaram os prefixos anteriores do histórico, com motivos/prazos/autores/datas distintos. Reenvio cria versão 2, preserva conteúdo original e superseded_by=2; aprovação termina com 6 eventos sequenciais."
     },
     {
-      "requirement": "Versões antigas e histórico permanecem",
+      "requirement": "Aprovação terminal",
       "result": "pass",
-      "evidence": "20 ciclos preservaram exatamente os 21 conteúdos, os 20 motivos com o número de substituição correto e 42 eventos sequenciais. Reinício de armazenamento temporário preservou pedido pendente e rejeitou reenvio tardio sem apagar dados."
+      "evidence": "Após aprovar, novo pedido, nova versão e segunda aprovação recebem REVIEW_CLOSED sem alteração; renovação não reabre revisão encerrada."
     },
     {
-      "requirement": "API, exemplos, relógio controlado, escolhas futuras e nota de IA",
+      "requirement": "Estado projetado não exige migração nem gravação em GET",
       "result": "pass",
-      "evidence": "README inclui comandos, rotas, requests, respostas e limitações explícitas de persistência/autenticação. Testes injetam relógio. Nota descreve implementação por IA e não inventa revisão humana; revisão independente pendente deve ser atualizada pelo coordenador após as duas revisões."
+      "evidence": "Snapshot schema 1 sem change_request_status foi reaberto e retorna expired pelo relógio. GET não altera bytes/mtime/contador de save nem histórico. Falha de persistência injetada na renovação mantém o agregado e arquivo anteriores, sem temporários."
+    },
+    {
+      "requirement": "API e limites compatíveis e honestos",
+      "result": "pass",
+      "evidence": "14 requests HTTP reais verificam novo campo active/expired/null, fronteiras, renovação, reenvio, aprovação e erros sem escrita. Rotas/payloads/estados/formato persistido permanecem; o campo aditivo de resposta é documentado. README mantém limites de um processo local e identificação de ator demonstrativa."
     }
   ],
   "findings": [],
-  "outside_contract_suggestions": [],
-  "verdict": "pass",
-  "limitations": [
-    "Pass se refere ao SHA f7212f0ded7caa36370518e6cdcaa8780556f380. Revisão anterior arquivada em03-a-anterior.json; sua observaçãoP3 foi corrigida e conferida.",
-    "A revisão delta não representa deploy ou produção. Persistência em um processo e autenticação demonstrativa permanecem limites explícitos do README."
-  ],
-  "delta_base_sha": "1781eb0d47cf6b57b298ea37b811567f4982ac84",
-  "previous_review": "revisoes/03-a-anterior.json",
   "resolved_findings": [
     {
-      "id": "03-A-extra-field",
-      "previous_priority": "P3",
-      "original_scope": "Sugestão fora do enunciado; cumprimento adicional da validação documentada no README",
-      "file": "src/review.js",
-      "line": 11,
+      "id": "03-opus-expired-deadend",
+      "previous_priority": "P2",
+      "origin": "revisoes/claude-opus55/parecer-subagente-03.json",
       "status": "fixed_and_independently_verified",
-      "fixed_sha": "f7212f0ded7caa36370518e6cdcaa8780556f380",
-      "previous_observation": {
-        "method": "POST /scripts",
-        "body": {
-          "": 1,
-          "unexpected": 2,
-          "creator_id": "c",
-          "brand_id": "b",
-          "content": "x"
-        },
-        "observed": "HTTP 201, state awaiting_review",
-        "documented_extra_behavior": "README afirma que campos desconhecidos são rejeitados"
-      },
-      "current_observation": "HTTP422 INVALID_INPUT com details.field correspondente ao primeiro extra, inclusive string vazia; nenhuma alteração parcial. As quatro escritas continuam funcionando sem extras e produzem o fluxo aprovado com quatro eventos.",
-      "proof": "revisoes/03-a-delta-adversarial-results.json"
+      "file": "src/review.js",
+      "line": 107,
+      "related_lines": [
+        51,
+        108,
+        111,
+        115
+      ],
+      "proof": "O pedido expirado deixou de bloquear permanentemente o roteiro. Agora só o expirado permite substituição válida pela mesma marca; status projetado informa expiração; histórico anterior preservado; fluxo chega a approved com 2 versões. Provas na sonda própria e na suíte 33/33."
     }
-  ]
+  ],
+  "outside_contract_suggestions": [
+    {
+      "priority": "P3",
+      "origin": "Parecer Opus, artefatos da publicação anterior",
+      "details": "O recibo anterior cita src/review-service.js e docs/verificacao-final.md tem frase genérica sobre integrações. São artefatos históricos preservados, não modificados por este delta. Na próxima nota enviada, indicar README e src/review.js; estes P3 não bloqueiam a correção."
+    }
+  ],
+  "source_integrity": {
+    "immutable_paths": 11,
+    "archive_all_tracked_bytes_unchanged": true,
+    "previous_review_preserved": true,
+    "evidence": "revisoes/support/03-a-renewal-integrity.json",
+    "original_test_adjustment": "Uma comparação original foi ampliada com change_request_status:'expired'; mantém a comparação integral de todos os demais campos após rejeição."
+  },
+  "limitations": [
+    "Validação local com dados fictícios, relógio injetado e HTTP loopback. Não é deploy nem teste de produção.",
+    "Persistência segue limitada a um processo local; autenticação real e idempotência continuam fora do escopo declarado.",
+    "Esta revisão A aprova o SHA fixo; os gates de revisão B, checkout/captura do coordenador e publicação são separados. Nenhum artefato anterior foi usado como aprovação desta correção."
+  ],
+  "verdict": "pass",
+  "blocking_findings": 0,
+  "repository_mutated_by_reviewer": false,
+  "evidence_artifacts": [
+    "revisoes/03-a-f721-anterior.json",
+    "revisoes/support/03-a-renewal-tests.txt",
+    "revisoes/support/03-a-renewal-probe.mjs",
+    "revisoes/support/03-a-renewal-probes.json",
+    "revisoes/support/03-a-renewal-integrity.json"
+  ],
+  "reviewed_at": "2026-10-09 21:36:08 UTC"
 }

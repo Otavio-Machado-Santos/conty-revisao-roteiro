@@ -1,0 +1,38 @@
+import { ReviewService } from '../projetos/conty-revisao-roteiro/src/review.js';
+import { createHttpServer } from '../projetos/conty-revisao-roteiro/src/server.js';
+
+// Somente o bootstrap de evidência possui o controle de relógio.
+// Domínio e handler HTTP são os arquivos reais do commit revisado.
+let instant = '2026-10-09T20:00:00.000Z';
+const service = new ReviewService({ clock: () => new Date(instant) });
+const server = createHttpServer({ service });
+const handler = server.listeners('request')[0];
+server.removeAllListeners('request');
+server.on('request', async (request, response) => {
+  if (request.url !== '/__evidence_clock' || request.method !== 'POST') {
+    return handler(request, response);
+  }
+  try {
+    let raw = '';
+    for await (const chunk of request) {
+      raw += chunk.toString('utf8');
+      if (raw.length > 1024) throw new Error('Controle de relógio excedido');
+    }
+    const value = JSON.parse(raw).instant;
+    if (typeof value !== 'string' || !Number.isFinite(Date.parse(value)) || new Date(value).toISOString() !== value) {
+      throw new Error('Use timestamp UTC canônico');
+    }
+    instant = value;
+    response.writeHead(200, { 'content-type': 'application/json', 'cache-control': 'no-store' });
+    response.end(JSON.stringify({ evidence_only: true, instant }));
+  } catch {
+    response.writeHead(422, { 'content-type': 'application/json' });
+    response.end(JSON.stringify({ error: 'Relógio de evidência inválido' }));
+  }
+});
+server.listen(3003, '127.0.0.1', () => {
+  console.log(`API real do roteiro em3003; relógio controlado${instant}; armazenamento em memória somente para captura.`);
+});
+for (const signal of ['SIGINT', 'SIGTERM']) {
+  process.once(signal, () => server.close(() => process.exit(0)));
+}

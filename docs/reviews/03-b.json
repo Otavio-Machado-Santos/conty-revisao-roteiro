@@ -1,98 +1,277 @@
 {
   "challenge": 3,
-  "reviewed_sha": "f7212f0ded7caa36370518e6cdcaa8780556f380",
-  "base_sha": "8554cf137ded9626066defd7d365f9eab6bc1aab",
-  "reviewer": "Codex /root/implementar_vendas, independente do autor do desafio3",
-  "review_axis": "B: robustez, API, persistência e transições; delta de campos desconhecidos com chave vazia",
-  "checked_at": "2026-10-09T19:22:19.275Z",
+  "reviewed_sha": "db12564279a7ab18d3c7e99759f24c69a6a78227",
+  "base_sha": "c5301a8d729b2c3a23aa3f4f29248de4035ccdd3",
+  "previous_code_sha": "f7212f0ded7caa36370518e6cdcaa8780556f380",
+  "previous_review": "revisoes/03-b-f721-anterior.json",
+  "reviewer": "Codex /root/implementar_metricas; revisão B independente do implementador",
+  "review_axis": "B: delta da renovação após expiração, projeção GET e transições sem efeitos parciais; Standards e Spec avaliados separadamente",
+  "checked_at": "2026-10-09T21:36:01.977954+00:00",
   "runtime": "Node.js v22.23.3",
   "repository": "/Users/flowbix_redfinger/XiaomiMiMoProjects/conty challenge/projetos/conty-revisao-roteiro",
+  "scope": "Commit fixo por git archive isolado. Nenhum código candidato foi editado. Testes do candidato e sondagens novas ficaram limitados aos riscos do delta; partes imutáveis foram herdadas somente após hashes e escopo conferidos. Árvore de trabalho modificada não foi usada para executar a revisão.",
   "read": [
     "docs/enunciado.txt",
     "README.md",
-    "package.json",
-    "src/*.js",
-    "test/*.test.js",
-    "diff da base ao candidato"
+    "docs/renovacao-pedido-expirado.md",
+    "src/review.js",
+    "src/deadline.js",
+    "src/store.js",
+    "src/server.js",
+    "test/renewal.test.js",
+    "test/review.test.js",
+    "diff c5301a8...db12564",
+    "revisoes/claude-opus55/parecer-subagente-03.json",
+    "revisoes/03-b-f721-anterior.json"
   ],
   "commands": [
     {
-      "command": "git rev-parse HEAD; git status --short",
-      "result": "SHA delta fixo correto e checkout limpo."
-    },
-    {
-      "command": "git diff 1781eb0d47cf6b57b298ea37b811567f4982ac84...f7212f0ded7caa36370518e6cdcaa8780556f380",
-      "result": "Condição extra !== undefined corrige o bypass de chave vazia; testes e log atualizados."
-    },
-    {
-      "command": "npm test (Node.js 22 no PATH)",
+      "command": "git rev-parse candidato/base; git diff --stat e git diff --check c5301a8...db12564; git archive db125642",
       "exit_code": 0,
-      "result": "23 testes passaram, nenhuma falha."
+      "result": "SHA fixo correto; apenas revisão, testes de renovação, README e evidências alterados; diff sem whitespace errors."
     },
     {
-      "command": "git diff --check 1781eb0d47cf6b57b298ea37b811567f4982ac84...f7212f0ded7caa36370518e6cdcaa8780556f380",
+      "command": "npm test com Node22 no archive isolado db125642",
       "exit_code": 0,
-      "result": "Nenhum erro de whitespace."
+      "result": "33 testes passaram; nenhuma falha. Não houve repetição ampla por rotina.",
+      "evidence": "revisoes/03-b-db125-tests-summary.txt"
     },
     {
-      "command": "node revisoes/probes/03-b.mjs (Node.js 22)",
+      "command": "node revisoes/probes/03-b-db125.mjs <archive db125642> revisoes/03-b-db125-probes.json",
       "exit_code": 0,
-      "result": "5 grupos anteriores passaram novamente; sugestão P3 anterior permanece reproduzível e não bloqueante."
+      "result": "4 fronteiras literais de calendário SP, 48 rejeições sem mutação de memória/arquivo, 32 requests HTTP reais, 12 renovações concorrentes com um único sucesso; reload terminal aprovado.",
+      "evidence": "revisoes/03-b-db125-probes.json"
     },
     {
-      "command": "node revisoes/probes/03-b-delta.mjs (Node.js 22)",
+      "command": "git show/hash dos arquivos entre f7212f0, c5301a8 e db125642; node --check dos 3 arquivos JS alterados",
       "exit_code": 0,
-      "result": "16 entradas HTTP rejeitadas com422 nas quatro escritas, sem alterar bytes/estado/IDs; fluxo válido e restart aprovados."
+      "result": "11 arquivos imutáveis byte a byte idênticos; src/review.js original f721=c530; helpers gerais de input/ator/expected_version/editable literalmente inalterados. Sintaxe dos 3 arquivos alterados passou.",
+      "evidence": "revisoes/03-b-db125-source-integrity.json"
     }
   ],
   "own_probes": [
     {
-      "case": "Falha real de rename causada por diretório no destino",
-      "result": "HTTP500; agregado em memória não mudou, temporário foi removido, mesmo comando funcionou após restaurar o destino."
+      "case": "Expiração no último milissegundo/primeiro seguinte em calendário SP",
+      "result": "4 cenários distintos dos testes novos: 2024-02-29, 2026-12-31, 2017-10-15 e 2017-02-18. Fronteiras UTC literais foram confirmadas: último ms active e renovação409; primeiro ms expired e pedido novo válido aceito. Data local SP permanece no prazo até o último ms, inclusive em DST."
     },
     {
-      "case": "20 reenvios simultâneos contra versão1",
-      "result": "1 HTTP201 e 19 STALE_VERSION/409; somente2 versões, histórico3, conteúdo original preservado."
+      "case": "GET somente projeção, compatibilidade e cópias",
+      "result": "9 leituras por cenário não chamaram save nem alteraram agregado armazenado, bytes, inode ou mtime. change_request_status ausente do snapshot, presente apenas na resposta; snapshot anterior sem flag carrega e projeta expired com relógio atual."
     },
     {
-      "case": "10 aprovações simultâneas, restart e objetos devolvidos",
-      "result": "1 HTTP200 e9 REVIEW_CLOSED/409; persistência reabre em approved, comandos não reabrem, mudanças em cópias não afetam estado."
+      "case": "Erros na tentativa de renovar",
+      "result": "Marca errada403, versão obsoleta409, versão textual422, motivo vazio422, calendário impossível422 e novo prazo passado422; creator reenviando antes da renovação409 e aprovação com pedido pendente409. Cada rejeição conserva memória/arquivo/IDs, histórico e pedido; flagsGET seguem a hora, sem mutação persistida."
     },
     {
-      "case": "8 payloads com tipos inválidos,6 datas inválidas e prazo passado via HTTP",
-      "result": "422 com código coerente, sem mutação do agregado."
+      "case": "Renovação conserva história e permite concluir o mesmo roteiro",
+      "result": "Permanece versão1, substitui somente o pedido vigente da versão e acrescenta evento. Prefixo inteiro do histórico anterior preservado com motivo/prazo/autor/data/versão. Reenvio cria v2 e preserva conteúdo v1/superseded_by; aprovação gera histórico5 e se mantém após restart."
     },
     {
-      "case": "Calendário IANA em8 datas, incluindo0001/9999, bissexto e DST",
-      "result": "valid_until pertence ao dia informado; expires_at é o próximo milissegundo e já pertence a outro dia."
+      "case": "Aprovação terminal após a renovação",
+      "result": "Novo pedido, nova versão e segunda aprovação recebem409 REVIEW_CLOSED, inclusive um ano depois, com estado e bytes preservados. Flag derivada null nos estados awaiting_review/approved."
     },
     {
-      "case": "Campo vazio e segundo desconhecido nas quatro escritas, em ordens diferentes",
-      "result": "16 HTTP422 com INVALID_INPUT e field coerente; antes/depois de cada tentativa, bytes, agregado e gerador de ID ficaram intactos. Fluxo no último instante manteve histórico4, versões2 e aprovado após restart."
+      "case": "Renovação concorrente em um processo real HTTP",
+      "result": {
+        "attempted": 12,
+        "successful": 1,
+        "invalid_state": 11,
+        "versions": 1,
+        "history_events": 3
+      }
+    },
+    {
+      "case": "Erros e GET via HTTP no ramo expirado",
+      "result": "32 requests em loopback com relógio controlado, inclusive último ms, primeiro expirado, ator/versão/prazo inválido, disputa, reenvio, aprovação e fechamento. GETs e erros preservam bytes/inode/mtime do snapshot; uma renovação aceita e11 INVALID_STATE sem duplicar evento."
     }
   ],
-  "findings": [
+  "source_integrity": {
+    "reviewed_sha": "db12564279a7ab18d3c7e99759f24c69a6a78227",
+    "published_base_sha": "c5301a8d729b2c3a23aa3f4f29248de4035ccdd3",
+    "prior_code_sha": "f7212f0ded7caa36370518e6cdcaa8780556f380",
+    "unchanged_files": [
+      {
+        "file": "src/deadline.js",
+        "previous_code_blob": "7db4a6b75ed5305a46b4883f7cb159d83dd8658d",
+        "published_base_blob": "7db4a6b75ed5305a46b4883f7cb159d83dd8658d",
+        "candidate_blob": "7db4a6b75ed5305a46b4883f7cb159d83dd8658d",
+        "candidate_sha256": "7ef8a0f24608b682077d634add2b91539c74b348edec91a119ed950b767e8fa0",
+        "identical_f721_c530_db125": true,
+        "snapshot_matches_commit": true
+      },
+      {
+        "file": "src/store.js",
+        "previous_code_blob": "b08e95dc8769aaa9dcb487e5edd39d6f33ac2228",
+        "published_base_blob": "b08e95dc8769aaa9dcb487e5edd39d6f33ac2228",
+        "candidate_blob": "b08e95dc8769aaa9dcb487e5edd39d6f33ac2228",
+        "candidate_sha256": "420645e09a303c17ed415578c03db89e651698ddfeb3bdf68ac2c1746d3577bc",
+        "identical_f721_c530_db125": true,
+        "snapshot_matches_commit": true
+      },
+      {
+        "file": "src/server.js",
+        "previous_code_blob": "3576e6b35cd23f9addb2f5fa83f74698448e8096",
+        "published_base_blob": "3576e6b35cd23f9addb2f5fa83f74698448e8096",
+        "candidate_blob": "3576e6b35cd23f9addb2f5fa83f74698448e8096",
+        "candidate_sha256": "1633cd58a8326bd300e0e1351a2223e0e2b747889b874b4ed1c3c689a0e609ee",
+        "identical_f721_c530_db125": true,
+        "snapshot_matches_commit": true
+      },
+      {
+        "file": "src/start.js",
+        "previous_code_blob": "0ff7359c31d3a303f4514934b6530fbc59c8710f",
+        "published_base_blob": "0ff7359c31d3a303f4514934b6530fbc59c8710f",
+        "candidate_blob": "0ff7359c31d3a303f4514934b6530fbc59c8710f",
+        "candidate_sha256": "710e5649746dbf5526415e6ded92b99652629cb6e359e3b9bde2c96c5bd385fb",
+        "identical_f721_c530_db125": true,
+        "snapshot_matches_commit": true
+      },
+      {
+        "file": "src/errors.js",
+        "previous_code_blob": "36b3a97f9743101bcdc7497728cc1077e032bb13",
+        "published_base_blob": "36b3a97f9743101bcdc7497728cc1077e032bb13",
+        "candidate_blob": "36b3a97f9743101bcdc7497728cc1077e032bb13",
+        "candidate_sha256": "004e0c1a17d1d5bd467bfed0558288da50c05649587ac38401d46e01d8a3ecf6",
+        "identical_f721_c530_db125": true,
+        "snapshot_matches_commit": true
+      },
+      {
+        "file": "package.json",
+        "previous_code_blob": "011778654c1b4d0553aec3ca60ee7d94cf47ae17",
+        "published_base_blob": "011778654c1b4d0553aec3ca60ee7d94cf47ae17",
+        "candidate_blob": "011778654c1b4d0553aec3ca60ee7d94cf47ae17",
+        "candidate_sha256": "5df3288d0f64140e56596c1780533368c6ef12fb0e5e7aeee1448bfdb9d1ec12",
+        "identical_f721_c530_db125": true,
+        "snapshot_matches_commit": true
+      },
+      {
+        "file": "scripts/demo.js",
+        "previous_code_blob": "2ffb1370bb5c290d69585e92a0ecdb604a29fcb1",
+        "published_base_blob": "2ffb1370bb5c290d69585e92a0ecdb604a29fcb1",
+        "candidate_blob": "2ffb1370bb5c290d69585e92a0ecdb604a29fcb1",
+        "candidate_sha256": "1151a0e4c12c63d424f477cad091232a2d7344664609020412bd4ac30e75d37b",
+        "identical_f721_c530_db125": true,
+        "snapshot_matches_commit": true
+      },
+      {
+        "file": "test/deadline.test.js",
+        "previous_code_blob": "d5824e067541e11a75aa9e752d9060768b0b76ac",
+        "published_base_blob": "d5824e067541e11a75aa9e752d9060768b0b76ac",
+        "candidate_blob": "d5824e067541e11a75aa9e752d9060768b0b76ac",
+        "candidate_sha256": "210a964f5819f69bc7de34cce51d00982aac8e138b6777575bec569e1a0c8d21",
+        "identical_f721_c530_db125": true,
+        "snapshot_matches_commit": true
+      },
+      {
+        "file": "test/http.test.js",
+        "previous_code_blob": "e06d237684fe8bed29ca3d0b5dcdaad0e3ffc046",
+        "published_base_blob": "e06d237684fe8bed29ca3d0b5dcdaad0e3ffc046",
+        "candidate_blob": "e06d237684fe8bed29ca3d0b5dcdaad0e3ffc046",
+        "candidate_sha256": "cd03df220e73b685ec47045ab34b14ce298ae162eba939321361d6ed954cd211",
+        "identical_f721_c530_db125": true,
+        "snapshot_matches_commit": true
+      },
+      {
+        "file": "test/store.test.js",
+        "previous_code_blob": "d13ab7a8b4217edf963d16f3fdfdc30c7c1aa79b",
+        "published_base_blob": "d13ab7a8b4217edf963d16f3fdfdc30c7c1aa79b",
+        "candidate_blob": "d13ab7a8b4217edf963d16f3fdfdc30c7c1aa79b",
+        "candidate_sha256": "4628150d620360c019e7b16ab6f61fa379fce1ab1629a8c242df7c3a350a6e7a",
+        "identical_f721_c530_db125": true,
+        "snapshot_matches_commit": true
+      },
+      {
+        "file": "docs/enunciado.txt",
+        "previous_code_blob": "90ea6b32c013f7284b52a6febd63eebc49f030d0",
+        "published_base_blob": "90ea6b32c013f7284b52a6febd63eebc49f030d0",
+        "candidate_blob": "90ea6b32c013f7284b52a6febd63eebc49f030d0",
+        "candidate_sha256": "0dd0b431e97d7875cedefaeb63a9d4cdd4432a190afa2f720fb8a55ab1aba301",
+        "identical_f721_c530_db125": true,
+        "snapshot_matches_commit": true
+      }
+    ],
+    "original_review_code_identical_f721_c530": true,
+    "input_actor_expected_version_editable_helpers_literal_unchanged": true,
+    "syntax_delta": [
+      {
+        "file": "src/review.js",
+        "exit_code": 0
+      },
+      {
+        "file": "test/renewal.test.js",
+        "exit_code": 0
+      },
+      {
+        "file": "test/review.test.js",
+        "exit_code": 0
+      }
+    ],
+    "inheritance_scope": "Somente calendário, HTTP transport, persistência e validação geral imutáveis herdados; novas condições de renovação/projeção/histórico/transições foram sondadas no candidato."
+  },
+  "inherited_evidence": {
+    "from_reviewed_sha": "f7212f0ded7caa36370518e6cdcaa8780556f380",
+    "report": "revisoes/03-b-f721-anterior.json",
+    "scope": "Robustez HTTP de transporte/JSON, função de calendário, persistência e validação geral imutáveis. As novas decisões de renovação/projeção/estado/histórico foram efetivamente reexecutadas no candidato atual.",
+    "not_reexecuted": "Sem novo fuzz de décadas, nova matriz geral de corpos/métodos ou corrupção semântica externa; a evidência histórica não foi apresentada como uma nova execução."
+  },
+  "resolutions": [
+    {
+      "id": "03-opus-expired-deadend",
+      "status": "resolved",
+      "origin": "revisoes/claude-opus55/parecer-subagente-03.json; P2 src/review.js:94 do candidato anterior",
+      "source": "src/review.js:51-54,99-116; README.md:64; docs/renovacao-pedido-expirado.md",
+      "evidence": "O GET agora explicita active/expired sem salvar estado. A mesma marca pode renovar somente pedido expirado da versão atual, com motivo e prazo ainda válido; reenvio e aprovação concluem no mesmo roteiro. Histórico, versões e erros sem mutação foram comprovados nas sondagens próprias."
+    }
+  ],
+  "review_axes": {
+    "Standards": {
+      "reviewer": "standards_delta09, leitura independente do delta fixo; runtime integrado pelo revisor B",
+      "verdict": "pass",
+      "blocking_findings": 0,
+      "report": "Nenhuma violação documentada de Node22/ESM/ausência de dependências nem smell que justifique mudança. Projeção não salva nem registra eventos. Renovação valida ator, versão, expiração, motivo e novo prazo antes de alterar cópia. Testes novos usam temporários próprios. A igualdade ajustada no teste antigo acomoda apenas o status derivado, mantendo o agregado integralmente comparado."
+    },
+    "Spec": {
+      "reviewer": "spec_delta09, leitura independente do delta fixo; runtime integrado pelo revisor B",
+      "verdict": "pass",
+      "blocking_findings": 0,
+      "report": "O P2 de fluxo pós-expiração foi resolvido. Caminho de renovação e flag live estão explícitos no README e nos exemplos; prazo vigente, mesma marca/versão, histórico e aprovação terminal permanecem exigidos. Não há requisito ausente, comportamento errado ou ampliação indevida no delta. Nota IA distingue a evidência histórica das verificações ainda pendentes da correção."
+    }
+  },
+  "findings": [],
+  "out_of_contract_suggestions": [
     {
       "id": "03-B-01",
       "priority": "P3",
-      "classification": "suggestion",
       "blocking": false,
       "file": "src/store.js",
       "line": 18,
       "title": "Validar coerência semântica adicional do snapshot na carga",
-      "reproduction": "Em arquivo temporário criado pelo serviço, aprovar um roteiro; editar somente versions[-1].state para awaiting_review e reabrir ScriptStore. O loader aceita o agregado state=approved com a versão atual awaiting_review. Probe reproduzível em revisoes/probes/03-b.mjs.",
-      "impact": "Um arquivo alterado externamente pode produzir resposta contraditória; não foi possível gerar essa inconsistência pelos comandos ou HTTP da aplicação.",
-      "recommendation": "Opcionalmente validar states do agregado/versão atual, current_version inteiro, sequência e campos necessários de change_request/approved_at na carga.",
-      "contract_relation": "Sugestão de robustez do armazenamento. O contrato funcional de versões, histórico, prazo e fechamento passou; nenhuma exigência de recuperação de corrupção semântica externa está no enunciado."
+      "note": "Sugestão histórica herdada; src/store.js imutável. Inconsistência exige edição externa do snapshot e não foi causada pelo fluxo da API. Não reexecutada por estar fora do delta."
     }
   ],
-  "requirements_status": "Requisitos funcionais revisados continuam satisfeitos. Delta bloqueia campo vazio antes de mutações em todas as escritas, inclusive quando precede outro campo desconhecido.",
+  "prior_opus_documentation_followups": [
+    {
+      "priority": "P3",
+      "file": "docs/evidence/conty-recibo.json",
+      "line": 5,
+      "title": "A nota enviada à Conty aponta para um arquivo que não existe (src/review-service.js)",
+      "scope": "P3 de documentação/publicação histórica já registrado pelo Opus; separado da aprovação do delta de código, não reexecutado nesta revisão."
+    },
+    {
+      "priority": "P3",
+      "file": "docs/verificacao-final.md",
+      "line": 14,
+      "title": "Texto padrão cita integrações externas mockadas, que não existem nesta entrega",
+      "scope": "P3 de documentação/publicação histórica já registrado pelo Opus; separado da aprovação do delta de código, não reexecutado nesta revisão."
+    }
+  ],
+  "requirements_status": "Delta aprovado sem P0/P1/P2 pendentes. Renovação após expiração remove o beco sem saída; projeção GET explícita e somente leitura, histórico/versões, fronteiras, erros sem estado alterado, concorrência em um processo e fechamento terminal comprovados.",
   "limitations": [
     "Um processo local por arquivo, sem lock multiprocesso ou durabilidade perante falha de energia; limites declarados no README.",
     "IDs de ator recebidos no JSON não são autenticação; limite declarado no README e fora do escopo exigido.",
     "A revisão não executou deploy ou integração externa; código do candidato permaneceu inalterado."
   ],
-  "verdict": "approved_with_nonblocking_suggestion",
-  "previous_reviewed_sha": "1781eb0d47cf6b57b298ea37b811567f4982ac84",
-  "delta_base_sha": "1781eb0d47cf6b57b298ea37b811567f4982ac84"
+  "verdict": "pass",
+  "publication_performed": false,
+  "note": "Revisão encerrada após o delta relevante passar. Não houve edição de código, push, envio à Conty ou alegação de revisão humana."
 }
