@@ -20,3 +20,14 @@ O GIF foi codificado dos frames de screencast do navegador durante a execução 
 O Opus pediu uma saída para um pedido de alteração vencido. A mesma marca agora pode renovar somente um pedido expirado da versão atual, mantendo o histórico. A resposta informa `change_request_status` como `active`, `expired` ou `null`, sem gravação durante a consulta. Pedido ainda ativo e aprovação encerrada continuam protegidos. Duas novas revisões Codex, 33 testes no checkout isolado e 21 etapas HTTP reais confirmaram a correção. A captura usa um relógio controlado, declarado na transcrição, e os handlers reais da API.
 
 A nota original registrada na Conty contém o caminho `src/review-service.js`; a entrada correta é [src/review.js](../src/review.js), também vinculada no README. O recibo original foi preservado. A reavaliação pelo Opus será registrada separadamente após a publicação deste ajuste.
+
+## Registro na Conty
+
+Status observado: **Entrega registrada**, em 2026-10-09T19:43:52.671Z.
+
+- [Link enviado](https://github.com/Otavio-Machado-Santos/conty-revisao-roteiro).
+- [Página do desafio](https://challenge.appconty.com/desafios/revisao-roteiro).
+- [Recibo e texto persistidos](evidence/conty-recibo.json).
+- [Screenshot real do registro](evidence/conty-recibo.jpg).
+
+O registro confirma o envio do link; a avaliação da Conty e o ranking dependem da auditoria da organização. Não é uma aprovação técnica pelo avaliador.
