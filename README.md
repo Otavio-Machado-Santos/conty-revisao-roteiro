@@ -1,5 +1,10 @@
 # Revisão de roteiro
 
+> **Se você veio pela nota da Conty (09/10):** a nota foi registrada antes da renovação de pedido vencido.
+> - O ponto de entrada é [`src/review.js`](src/review.js). A nota cita `src/review-service.js`, que não existe.
+> - A suíte tem **33 testes**; a nota cita 23. O commit `db12564`, posterior ao registro, acrescentou a renovação de pedido vencido e [seus testes](test/renewal.test.js).
+> - A captura HTTP atual tem **21 etapas** ([docs/evidence/coordenador-http.json](docs/evidence/coordenador-http.json)). A nota cita seis, da captura anterior ([docs/evidence/http-flow.json](docs/evidence/http-flow.json)).
+
 API pequena para enviar um roteiro, pedir alterações com motivo e prazo, reenviar e aprovar. Leia primeiro [o contrato](docs/enunciado.txt), depois [as transições](src/review.js) e [os testes](test/review.test.js).
 
 ```sh
@@ -67,6 +72,8 @@ O domínio não depende de HTTP. O processo grava snapshots JSON por arquivo tem
 
 ## Uso de IA e revisão
 
-Implementação, testes e documentação: Codex. Dois agentes Codex independentes do implementador revisaram o commit `db12564279a7ab18d3c7e99759f24c69a6a78227` e liberaram a entrega após testes e sondagens próprias. Os pareceres completos estão em `docs/reviews/`. O coordenador conferiu a instalação e os testes em checkout isolado e registrou o fluxo HTTP real. Não foi realizada revisão humana do código. A validação usa dados sintéticos e ambiente local; limites e interpretações do contrato estão documentados.
+Implementação, testes e documentação: Codex. Dois agentes Codex independentes do implementador revisaram o commit `db12564279a7ab18d3c7e99759f24c69a6a78227` e liberaram a entrega após testes e sondagens próprias. Os pareceres completos estão em `docs/reviews/`. O coordenador conferiu a instalação e os testes em checkout isolado e registrou o fluxo HTTP real. Uma revisão adicional com Claude Opus 5.5 encontrou o beco sem saída do pedido vencido no commit `f7212f0` e aprovou a correção `db12564`. Não foi realizada revisão humana do código. A validação usa dados sintéticos e ambiente local; limites e interpretações do contrato estão documentados.
 
-[Verificação e captura anteriores, preservadas como registro histórico](docs/verificacao-final.md).
+Atualização após o registro na Conty (10/10/2026): o bloco sobre a nota, no topo deste README, foi escrito por Claude Code (modelo `claude-opus-5-5`) a pedido do autor, depois de uma auditoria independente feita com o mesmo modelo. Essa atualização não altera código nem testes.
+
+[Verificação final, revisões e capturas, inclusive a captura atual de 21 etapas](docs/verificacao-final.md).
